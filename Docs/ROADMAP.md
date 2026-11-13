@@ -9,7 +9,7 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [x] Folder skeleton and placeholders committed
 - [x] Basic `.gitignore`, `.editorconfig`, and Allman `.clang-format`
 - [x] C17 smoke-test target and initial documentation
-- [ ] Confirm fresh Debian clone and `make test`
+- [x] Confirm fresh Debian 13 clone and `make help` / `make test` (2026-11-13; GCC/cc C17 smoke test passed on SLAVEK-LIN)
 
 ## Phase 1 — Essentials: Result
 
