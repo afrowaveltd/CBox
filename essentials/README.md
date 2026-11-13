@@ -8,7 +8,9 @@ The lowest-level CBox module. Intended to mirror the **purpose** of [Toolbox Ess
 - A `Response` type: a status and optional data, with an explicit ownership contract.
 - Only essential shared status, issue, or guard concepts when a real need arises.
 
-**No public API exists yet.** In particular, this README does not promise any finalized struct layout, enum, function name, or allocator policy.
+**A provisional educational header and tests now exist.** `include/cbox/essentials/result.h` declares the minimal Result experiment, but no implementation is committed yet and its interface is not finalized for release.
+
+The [first hands-on lesson](docs/01-result-first-steps.md) walks through the RED-to-GREEN workflow. The learner writes `src/result.c` locally and verifies `make test-result`.
 
 ## Dependency boundary
 

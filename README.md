@@ -4,13 +4,13 @@
 
 The goal is a collection of **small, reusable, well-documented C libraries** with portable behavior, explicit memory ownership, minimal dependencies, and meaningful automated tests. The first consumer will be [MemView](https://github.com/afrowaveltd/MemView), our hands-on C learning project.
 
-**Current status: repository foundation only.** No public Result, Response, or WhenItFails API has been finalized or implemented. The included smoke test verifies the C17 compiler/build setup, **not library functionality**.
+**Current status: foundation plus a guided Result exercise.** A provisional Result header and unit tests are committed for hands-on learning; the implementation is deliberately left to the learner. No Result, Response, or WhenItFails API has been finalized or released. The default smoke test verifies the C17 compiler/build setup, **not library functionality**.
 
 ## Modules
 
 | Module | Responsibility | Dependencies | Status |
 | --- | --- | --- | --- |
-| [essentials](essentials/README.md) | Fundamental shared types and contracts, beginning with Result and Response | C standard library only (initial goal) | Design pending |
+| [essentials](essentials/README.md) | Fundamental shared types and contracts, beginning with Result and Response | C standard library only (initial goal) | Provisional Result header + tests; implementation pending |
 | [when_it_fails](when_it_fails/README.md) | Higher-level diagnostics, errors, and failure handling | essentials | Reserved for later |
 
 Folder names use `snake_case`; exported C identifiers will use an explicit `cbox_` prefix to avoid collisions with application and third-party symbols.
@@ -64,9 +64,11 @@ git clone https://github.com/afrowaveltd/CBox.git
 cd CBox
 make help
 make test
+# First Result exercise (expected to fail until result.c is implemented):
+make test-result
 ```
 
-`make test` currently compiles and runs only `tests/smoke_test.c`. It deliberately does **not** imply that Result, Response, or other modules exist.
+`make test` currently compiles and runs only `tests/smoke_test.c`. The separate `make test-result` target provides deliberately RED tests for the first Result learning exercise. See [Lesson 01](essentials/docs/01-result-first-steps.md). Neither target implies an implemented or released library.
 
 ```bash
 make clean
