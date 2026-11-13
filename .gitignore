@@ -1,0 +1,46 @@
+# Build outputs
+/build/
+/bin/
+/obj/
+/out/
+/dist/
+/coverage/
+*.o
+*.obj
+*.a
+*.so
+*.so.*
+*.dylib
+*.dll
+*.exe
+*.lib
+*.exp
+*.pdb
+*.d
+*.gcda
+*.gcno
+*.gcov
+
+# Debug and diagnostics
+core
+core.*
+*.core
+*.log
+compile_commands.json
+.cache/
+.ccls-cache/
+
+# Editor / IDE local state
+.vscode/
+.idea/
+.vs/
+*.code-workspace
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Generated documentation
+/docs/html/
+/docs/latex/
