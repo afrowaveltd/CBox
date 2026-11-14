@@ -49,7 +49,7 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [x] Choose independent library architecture and development-only dependency direction
 - [x] Prepare opt-in CBox static-library integration and version-controlled VS Code tasks
 - [x] Document integration, C17 portability policy, and AJIS/AjisFS exploratory notes
-- [ ] Publish DoesItFail source as its own GitHub repository (separate starter package prepared)
+- [x] Publish independent DoesItFail repository at https://github.com/afrowaveltd/DoesItFail (C17 educational seed; no stable release)
 - [ ] Verify complete first Result implementation and commit learner-owned `result.c`
 - [ ] Gradually migrate Result tests from plain `assert` to DoesItFail EXPECT checks
 - [ ] Add more assertion types and optional ncurses reporter **in DoesItFail**, not CBox

@@ -99,11 +99,12 @@ MIT; see [LICENSE](LICENSE).
 
 ## Optional test framework: DoesItFail
 
-Our test runner is being developed as a **separate C17 library**, DoesItFail, not part of the CBox runtime or `when_it_fails`. CBox contains its own tests; it may *consume* DoesItFail as a development-only dependency. The repository for DoesItFail has not yet been published; its standalone starter tree is provided separately.
+Our test runner is being developed as a **separate C17 library**, DoesItFail, not part of the CBox runtime or `when_it_fails`. CBox contains its own tests; it may *consume* DoesItFail as a development-only dependency. The independently published source repository is [afrowaveltd/DoesItFail](https://github.com/afrowaveltd/DoesItFail). It is a prototype, not a stable released API.
 
-With the standalone DoesItFail directory alongside CBox, run:
+Clone [DoesItFail](https://github.com/afrowaveltd/DoesItFail) **beside** CBox (or point `DOES_IT_FAIL_DIR` to another checkout):
 
 ```bash
+git clone https://github.com/afrowaveltd/DoesItFail.git ../DoesItFail
 make test-framework
 ```
 

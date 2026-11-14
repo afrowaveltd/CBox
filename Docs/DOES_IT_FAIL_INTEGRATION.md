@@ -20,7 +20,9 @@ Afrowave Projects/
 ```
 
 ```bash
-cd 'Afrowave Projects/DoesItFail'
+# From CBox's parent directory, if not already cloned:
+git clone https://github.com/afrowaveltd/DoesItFail.git
+cd DoesItFail
 make all
 make test
 
@@ -36,7 +38,7 @@ If projects are not siblings:
 make test-framework DOES_IT_FAIL_DIR='/absolute/path/to/DoesItFail'
 ```
 
-`make test-framework` is deliberately optional and returns nonzero for missing dependency or test failures. It tests integration only, **not Result functionality**. No `ncurses` is linked. DoesItFail's standalone source tree is supplied separately pending creation/publication of its own GitHub repository; this file does not claim it is already published.
+`make test-framework` is deliberately optional and returns nonzero for missing dependency or test failures. It tests integration only, **not Result functionality**. No `ncurses` is linked. The upstream project is now published at [afrowaveltd/DoesItFail](https://github.com/afrowaveltd/DoesItFail); this seed is **not a stable API release**.
 
 ## VS Code: Debian and WSL
 

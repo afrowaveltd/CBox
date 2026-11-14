@@ -83,6 +83,6 @@ The initial `make test` only validates toolchain setup; it does **not** test any
 
 ## Independent development-time testing framework
 
-DoesItFail is an **external, standalone C17 library** providing a test-case registry, checks, structured results, and optional reporters. It is not the CBox `when_it_fails` module, and it does not replace .NET test tooling. A production build of `essentials` must never link DoesItFail. Consumer-owned test cases live in CBox itself; only test executables may link the external library.
+[DoesItFail](https://github.com/afrowaveltd/DoesItFail) is an **external, standalone C17 library** providing a test-case registry, checks, structured results, and optional reporters. It is not the CBox `when_it_fails` module, and it does not replace .NET test tooling. A production build of `essentials` must never link DoesItFail. Consumer-owned test cases live in CBox itself; only test executables may link the external library.
 
 The initial opt-in integration is `make test-framework`, leaving `make test` and learner-owned Result tests unchanged. For ownership, environment and repeatable module setup see [integration instructions](DOES_IT_FAIL_INTEGRATION.md). For exploratory AJIS/AjisFS performance and disk design discussions see [research notes](EXPERIMENTAL_STORAGE_NOTES.md), which are **not** promises of current CBox functionality.
