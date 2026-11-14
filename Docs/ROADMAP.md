@@ -71,4 +71,7 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Add charts, calendar, more styles/themes, packaging and cross-platform examples.
 - [ ] **High priority: CConsole FileBrowser**, port the nearly finished Spectre.Console FileBrowser using shared rendering/input/layout; verify the exact C# reference repository and its existing features first.
 - [ ] Cover file navigation, keyboard selection, cancellation, previews where supported, long-file/paging, terminal resize and filesystem error cases without adding dependencies to rendering core.
+- [ ] **AJIS/JSON Viewer:** define parser-independent token/navigation adapter and strict JSON vs AJIS dialects; see [viewer design](BLACKBOARD_AJIS_VIEWER.md).
+- [ ] Add styled JSON output, interactive AJIS/JSON tree navigation, sparse/streaming handling for very large files and optional FileBrowser preview integration.
+- [ ] Integrate the actual AJIS parser once its C API and behavior are verified; do not put parser code into Blackboard core.
 - [ ] Use in CBox programs, MemView and optionally a DoesItFail **reporter**, while DoesItFail's core stays standalone.

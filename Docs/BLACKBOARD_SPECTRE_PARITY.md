@@ -27,6 +27,7 @@ Use this tracker to distinguish **semantic parity**, **visual parity**, **API er
 | Resize/fallback | Terminal-capability-sensitive behavior | Narrow terminal, resize and non-VT fallback | Planned |
 | Extensibility | Custom renderables | C renderable callbacks/descriptors with ownership contract | Planned |
 | **FileBrowser (Afrowave reference)** | Nearly completed C# Spectre.Console FileBrowser, exact source not accessible to the current GitHub connection | Native C17 browser/picker with matching workflow, UI and tested optional previews | Planned; source parity pending |
+| **AJIS / JSON viewer (Afrowave extension)** | Separate upstream Spectre.Console.Json `JsonText` for colorized JSON; no AJIS support in upstream | Interactive native AJIS/strict-JSON tree and syntax viewer with optional FileBrowser integration | Planned; dependent on native AJIS parser |
 | Testing | TestConsole / renderable verification | Recording backend, snapshot and cross-language comparison tests | Planned |
 
 **Out of scope for the core:** C# generic syntax, reflection, async runtime semantics, C# fluent API source compatibility. These need idiomatic C equivalents, not false equivalence.

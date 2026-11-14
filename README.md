@@ -91,6 +91,8 @@ Read [Architecture](Docs/ARCHITECTURE.md), [API documentation rules](Docs/API_DO
 
 Blackboard's longer-term scope includes a **C17 FileBrowser** matching our existing C# Spectre.Console FileBrowser, as a high-level module depending on the shared console/rendering/input engine. Its implementation and reference-based feature audit are pending; see the [design](Docs/BLACKBOARD_CONSOLE_DESIGN.md#high-priority-advanced-component-filebrowser).
 
+A planned [AJIS/JSON structured-data viewer](Docs/BLACKBOARD_AJIS_VIEWER.md) will reuse the standalone AJIS parser's C API and Blackboard rendering. It may be used as a FileBrowser preview or as a standalone terminal viewer. Neither native parser nor viewer is implemented yet.
+
 ## Related projects
 
 - [.NET Toolbox](https://github.com/afrowaveltd/Toolbox) — conceptual and behavioral reference, especially `Essentials/Results`.

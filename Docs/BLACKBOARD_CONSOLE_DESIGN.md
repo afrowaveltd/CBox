@@ -185,13 +185,22 @@ Recommended **feature targets**, to verify against the actual C# repository befo
 
 **Phasing:** Implement after basic renderables, layout, keyboard input and terminal resize are stable. A first file-picker vertical slice may be used to validate those abstractions **before** all advanced Spectre.Console widgets are complete. Test both interactive and headless file-system logic.
 
+## High-priority optional viewer: AJIS and JSON
+
+The CBox Blackboard scope also includes a **common AJIS/JSON structured-data viewer**, fed by an external native AJIS parser when its stable C API becomes available. This is intended to surpass simple colorized JSON with interactive tree navigation and low-memory file previews.
+
+**Do not merge parsing into rendering:** `AJIS parser -> independent data API`; the optional `Blackboard AJIS viewer -> AJIS parser + Blackboard core`. FileBrowser is one consumer of the viewer, not its owner. Keep a strict JSON mode distinct from AJIS-specific extensions.
+
+For interfaces, memory constraints, lazy/streaming design, testing and source/view split see [AJIS + JSON Viewer](BLACKBOARD_AJIS_VIEWER.md). The native parser and viewer are both **planned**, not already implemented.
+
 ## Real consumers and shared appearance
 
 1. **Blackboard's own demonstration app** as a visual comparison with an equivalent Spectre.Console C# demonstration.
 2. **DoesItFail console reporter (optional)** while the DoesItFail core and its original stdio reporter remain independent.
 3. CBox command-line tools and instructional samples.
 4. **FileBrowser**: reproduce the current C# Spectre.Console browser in C17, reusing widgets and input adapters.
-5. MemView, diagnostic dashboards and installers that need panels, prompts, and live updates.
+5. **AJIS/JSON Viewer**: one structured-data explorer shared by standalone CLI tools and FileBrowser preview, once the parser API is available.
+6. MemView, diagnostic dashboards and installers that need panels, prompts, and live updates.
 
 Make a shared theme specification (named colors/hex values, border characters, spacing, fallback glyphs), **not** a promise that two terminals will render identical pixels. Shared golden examples should compare stable styled segments, normalized ANSI output or final cell grids and measure resulting readable layout.
 
