@@ -68,6 +68,7 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Add static widgets gradually (text, rule, panel, table, tree, grid, layouts) with normalized comparison tests against Spectre.Console.
 - [ ] Add progress, status, live rendering and screen lifecycle with redirect/fallback safeguards.
 - [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.
+- [ ] Design and test clickable **action regions**: keyboard activation, mouse reporting (SGR 1006/Win32), UTF-8-safe hit testing, callback context lifetimes, input mode restoration and safe OSC 8 URL distinction.
 - [ ] Add charts, calendar, more styles/themes, packaging and cross-platform examples.
 - [ ] **High priority: CConsole FileBrowser**, port the nearly finished Spectre.Console FileBrowser using shared rendering/input/layout; verify the exact C# reference repository and its existing features first.
 - [ ] Cover file navigation, keyboard selection, cancellation, previews where supported, long-file/paging, terminal resize and filesystem error cases without adding dependencies to rendering core.

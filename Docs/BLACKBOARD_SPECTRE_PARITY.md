@@ -26,6 +26,7 @@ Use this tracker to distinguish **semantic parity**, **visual parity**, **API er
 | Input/output redirection | Headless output and interaction checks | Plain text mode and noninteractive behavior | Planned |
 | Resize/fallback | Terminal-capability-sensitive behavior | Narrow terminal, resize and non-VT fallback | Planned |
 | Extensibility | Custom renderables | C renderable callbacks/descriptors with ownership contract | Planned |
+| **Clickable actions (CConsole extension)** | Spectre.Console already supports OSC 8 URI hyperlinks; general clickable callback text is a separate feature goal | Focusable hit regions linked to C function pointers + context; normalized mouse/keyboard events | Planned, signatures open |
 | **FileBrowser (Afrowave reference)** | Nearly completed C# Spectre.Console FileBrowser, exact source not accessible to the current GitHub connection | Native C17 browser/picker with matching workflow, UI and tested optional previews | Planned; source parity pending |
 | **AJIS / JSON viewer (Afrowave extension)** | Separate upstream Spectre.Console.Json `JsonText` for colorized JSON; no AJIS support in upstream | Interactive native AJIS/strict-JSON tree and syntax viewer with optional FileBrowser integration | Planned; dependent on native AJIS parser |
 | Testing | TestConsole / renderable verification | Recording backend, snapshot and cross-language comparison tests | Planned |

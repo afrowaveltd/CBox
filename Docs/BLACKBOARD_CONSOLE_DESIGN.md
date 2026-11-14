@@ -150,6 +150,57 @@ We will build the *foundation for the complete system* from day one, but impleme
 
 Each phase must update [the compatibility matrix](BLACKBOARD_SPECTRE_PARITY.md). A widget is **implemented** only after tests and a real consumer scenario pass. Declare nonmatching behavior and unsupported features explicitly.
 
+## Interactive action regions and mouse support (design candidate)
+
+**Goal:** in addition to plain OSC 8 URL hyperlinks, support **actionable text, menus, links and widgets backed by user-provided C function pointers**. This belongs in the core event/render architecture, not as a renderer-specific shortcut.
+
+**Distinguish two separate protocols:**
+- **OSC 8 hyperlink** attaches a URI to terminal output. The **terminal** normally owns link activation; clicking it does **not** send a C function pointer or a callback invocation to the app. Spectre.Console's `AnsiWriter` already has `BeginLink`/`EndLink` for this protocol.
+- **Terminal mouse reporting** (xterm-style `DECSET 1000` with SGR extended mouse encoding `1006`) sends mouse button/position reports back **to the application** where supported. A backend parses the report into a neutral input event. Windows native console input can also provide `MOUSE_EVENT_RECORD` via `ReadConsoleInput`. Feature detection and mode enablement are platform/backend-specific; support is not universal.
+
+**Core architecture addition:**
+
+```text
+terminal input (VT sequence / Win32 input event)
+    -> input decoder (key, mouse, wheel, resize, focus, paste)
+    -> normalized event queue
+    -> screen coordinate hit-testing against action regions
+    -> focus/navigation dispatcher
+    -> action callback + context pointer
+    -> state update / render invalidation / redraw
+```
+
+The renderer must associate its final *terminal cell bounds* with an action identity (including wrapped or multi-line text, broad emoji and clipped widgets). Hit testing must be derived from **actual post-layout positions**, never source-string character offsets; otherwise Unicode and scrolling would break clicking.
+
+**Illustrative callback concept — not public API:**
+
+```c
+typedef void (*cbox_console_action_fn)(void *user_data);
+
+typedef struct
+{
+    const char *label;                 /* Borrowed while registered */
+    cbox_console_action_fn callback;  /* Non-NULL while active */
+    void *user_data;                   /* Borrowed context */
+} cbox_console_action;
+```
+
+The caller retains ownership of `user_data` unless a future API explicitly transfers ownership. Region/handler unregistration must be defined so the framework cannot invoke a callback after its context or view has been destroyed. Reentrant callbacks, updates during dispatch and concurrent rendering need an explicit policy. Do not invent opaque pointer values as escape-sequence payloads.
+
+**Interaction principle:** action regions should also be **keyboard focusable**; Enter/Space activates when appropriate. A terminal with no mouse can still operate every critical workflow. Text-only logs show a readable label and optionally an ordinary URL, not executable control markup.
+
+**Security/accessibility:**
+- Mouse capture may override regular terminal selection and some native hyperlink behaviors; enable it only for interactive sessions and restore prior input modes on exit, including error paths when possible.
+- Never interpret a string from a file, JSON/AJIS value or untrusted markup as an instruction to execute a callback, shell command or arbitrary URL without an application-approved registry/handler policy.
+- Separate external URL navigation from application callbacks and explicit user action; avoid silent process execution.
+- Keep recognizable keyboard focus/highlight and an ASCII fallback for legacy consoles.
+- Event APIs and handler ownership are architectural requirements **but signatures and click protocols are not frozen**.
+
+Reference:
+- https://invisible-island.net/xterm/ctlseqs/ctlseqs.pdf (mouse protocol)
+- https://learn.microsoft.com/en-us/windows/console/getconsolemode (Win32 mouse and VT input modes)
+- https://github.com/spectreconsole/spectre.console/blob/main/src/Spectre.Console.Ansi/AnsiWriter.cs (OSC 8 hyperlink support)
+
 ## High-priority advanced component: FileBrowser
 
 The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.
