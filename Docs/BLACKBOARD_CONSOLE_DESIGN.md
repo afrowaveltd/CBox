@@ -150,12 +150,48 @@ We will build the *foundation for the complete system* from day one, but impleme
 
 Each phase must update [the compatibility matrix](BLACKBOARD_SPECTRE_PARITY.md). A widget is **implemented** only after tests and a real consumer scenario pass. Declare nonmatching behavior and unsupported features explicitly.
 
+## High-priority advanced component: FileBrowser
+
+The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.
+
+**Architecture rule:** FileBrowser is a higher-level module built on the CConsole/Blackboard UI engine, not a runtime dependency of the core renderer. File-system access is performed through a separately testable platform abstraction. The ANSI/renderable core must remain useful without file-system functions.
+
+Proposed module structure (paths and symbols not yet implemented):
+
+```text
+blackboard/
+  include/cbox/blackboard/console.h
+  include/cbox/blackboard/file_browser.h
+  src/core/                   # terminal, styles, layout, input
+  src/widgets/                # reusable table, panel, tree, prompt, ...
+  src/file_browser/           # browser navigation, selection, views
+  tests/file_browser/
+```
+
+Recommended **feature targets**, to verify against the actual C# repository before claiming parity:
+
+- Browse directories, highlight current entries, keyboard navigation, choose files/directories, cancel without changing caller state.
+- Sort/filter/search, visible file metadata and clear errors for inaccessible paths or I/O failures.
+- Preview text/Markdown/code when matching C# reference capabilities are established. Large files should use bounded reading, paging and/or optional disk cache; no requirement to load an entire large file into RAM.
+- Responsive terminal layout, resize handling, keyboard hints, Unicode and readable theme.
+- Platform-specific path semantics (POSIX, Windows), symlinks/junctions, permissions and safe navigation.
+- Optional future URL/Git remote preview only where backed by an explicit provider, not a mandatory dependency of the local file picker.
+- Borrowed/output ownership, result selection and cancellation contracts must be explicit and tested.
+- Avoid mandatory ncurses or network dependencies; previews and other adapters should be optional components.
+
+**Dependency direction:** `file_browser -> Blackboard renderables/layout/input -> backend`; never `renderer -> file_browser`. FileBrowser can be packaged separately while remaining part of the Blackboard family.
+
+**Reference verification status:** The presumed repository `afrowaveltd/SpectreConsoleFileBrowser` could not be opened with the current GitHub connection during this review. Do **not** record individual C# behaviors as verified from that repository until we can access its exact source. Port from the user's current real implementation, preserving behavior and tests, once the reference repository is accessible.
+
+**Phasing:** Implement after basic renderables, layout, keyboard input and terminal resize are stable. A first file-picker vertical slice may be used to validate those abstractions **before** all advanced Spectre.Console widgets are complete. Test both interactive and headless file-system logic.
+
 ## Real consumers and shared appearance
 
 1. **Blackboard's own demonstration app** as a visual comparison with an equivalent Spectre.Console C# demonstration.
 2. **DoesItFail console reporter (optional)** while the DoesItFail core and its original stdio reporter remain independent.
 3. CBox command-line tools and instructional samples.
-4. MemView, diagnostic dashboards and installers that need panels, prompts, and live updates.
+4. **FileBrowser**: reproduce the current C# Spectre.Console browser in C17, reusing widgets and input adapters.
+5. MemView, diagnostic dashboards and installers that need panels, prompts, and live updates.
 
 Make a shared theme specification (named colors/hex values, border characters, spacing, fallback glyphs), **not** a promise that two terminals will render identical pixels. Shared golden examples should compare stable styled segments, normalized ANSI output or final cell grids and measure resulting readable layout.
 

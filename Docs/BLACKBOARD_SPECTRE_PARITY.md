@@ -26,6 +26,7 @@ Use this tracker to distinguish **semantic parity**, **visual parity**, **API er
 | Input/output redirection | Headless output and interaction checks | Plain text mode and noninteractive behavior | Planned |
 | Resize/fallback | Terminal-capability-sensitive behavior | Narrow terminal, resize and non-VT fallback | Planned |
 | Extensibility | Custom renderables | C renderable callbacks/descriptors with ownership contract | Planned |
+| **FileBrowser (Afrowave reference)** | Nearly completed C# Spectre.Console FileBrowser, exact source not accessible to the current GitHub connection | Native C17 browser/picker with matching workflow, UI and tested optional previews | Planned; source parity pending |
 | Testing | TestConsole / renderable verification | Recording backend, snapshot and cross-language comparison tests | Planned |
 
 **Out of scope for the core:** C# generic syntax, reflection, async runtime semantics, C# fluent API source compatibility. These need idiomatic C equivalents, not false equivalence.

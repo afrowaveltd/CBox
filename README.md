@@ -89,6 +89,8 @@ Build output is placed in `build/` and excluded from Git. The project uses C17, 
 
 Read [Architecture](Docs/ARCHITECTURE.md), [API documentation rules](Docs/API_DOCUMENTATION.md), [Roadmap](Docs/ROADMAP.md), and the [Blackboard ↔ Spectre.Console compatibility matrix](Docs/BLACKBOARD_SPECTRE_PARITY.md).
 
+Blackboard's longer-term scope includes a **C17 FileBrowser** matching our existing C# Spectre.Console FileBrowser, as a high-level module depending on the shared console/rendering/input engine. Its implementation and reference-based feature audit are pending; see the [design](Docs/BLACKBOARD_CONSOLE_DESIGN.md#high-priority-advanced-component-filebrowser).
+
 ## Related projects
 
 - [.NET Toolbox](https://github.com/afrowaveltd/Toolbox) — conceptual and behavioral reference, especially `Essentials/Results`.
