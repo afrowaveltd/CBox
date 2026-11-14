@@ -187,7 +187,15 @@ typedef struct
 
 The caller retains ownership of `user_data` unless a future API explicitly transfers ownership. Region/handler unregistration must be defined so the framework cannot invoke a callback after its context or view has been destroyed. Reentrant callbacks, updates during dispatch and concurrent rendering need an explicit policy. Do not invent opaque pointer values as escape-sequence payloads.
 
-**Interaction principle:** action regions should also be **keyboard focusable**; Enter/Space activates when appropriate. A terminal with no mouse can still operate every critical workflow. Text-only logs show a readable label and optionally an ordinary URL, not executable control markup.
+**Interaction principle (agreed focus/activation model):** active regions are first-class **focusable UI elements**. The same application-defined action handler is invoked by clicking an active area and by using the keyboard. The intended default navigation is **Tab** = next focusable item, **Shift+Tab** = previous item, **Space** = activate focused item. **Enter** may also activate controls where appropriate. A terminal with no mouse can still operate every critical workflow. Noninteractive/plain output shows the label without pretending it is an interactive hyperlink.
+
+- **Underline is presentation, not behavior:** an underlined text span may optionally be registered as an active action target, but underlined text is not automatically clickable. Action regions may also cover table rows, tree nodes, buttons, menus and other renderables.
+- **Focus state is explicit:** preserve deterministic focus order, skip disabled or hidden entries, visibly mark focused element, keep it visible when scrolling, and restore focus appropriately after UI changes.
+- **Activation is unified:** normalized mouse click and keyboard Space/Enter dispatch an action identity to the **same** registered C callback/context. Widget authors should not implement parallel independent handlers.
+- **Hit regions use actual cell coordinates after layout:** text wrapping, scrolling, terminal resize and wide Unicode characters must map to the correct active item. A click on any displayed cell of an emoji or active row should resolve consistently.
+- **Bindings can be scoped to a view:** when a view is destroyed, its interactive region and callback registry entries are invalidated. Explicit borrowed-context lifetime and registration removal must be tested.
+- Avoid hijacking Space in text-editing controls; the focus manager must permit widget-specific key handling. Tab navigation should be predictable, and input modes should be restored on exit.
+
 
 **Security/accessibility:**
 - Mouse capture may override regular terminal selection and some native hyperlink behaviors; enable it only for interactive sessions and restore prior input modes on exit, including error paths when possible.
