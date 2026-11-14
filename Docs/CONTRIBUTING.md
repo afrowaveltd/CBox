@@ -30,6 +30,14 @@ Use `clang-format` with the repository's `.clang-format` settings for C source. 
 - Documentation and public comments: English.
 - Portable tests should avoid assuming pointer widths, integer layout beyond the C language guarantees, or particular filesystem paths.
 
+## Local state naming and instance isolation
+
+Function-local `static` variables should carry a short prefix derived from the containing function to make their ownership obvious during debugging and review, e.g. `print_something()` → `ps_printed_count`. Ordinary locals can use the same prefix when it improves clarity; do not force it on simple loop indices or parameters.
+
+This convention does **not** make a static local per-instance: a function-local static object is shared across calls within one process. Prefer an explicitly passed context structure for mutable per-instance state in CBox and future AJIS/AjisFS components. Multiple threads accessing mutable shared state need suitable synchronization. GCC/Clang `-Wshadow` can warn about identifier shadowing, but cannot substitute for a well-designed state owner.
+
+See [DoesItFail Lesson 03](https://github.com/afrowaveltd/DoesItFail/blob/main/Docs/LESSON_03_SCOPE_LIFETIME_STORAGE.md).
+
 ## Commits
 
 Keep commits limited to one coherent step. Do not introduce unused public APIs or claim a feature is tested merely because a compiler smoke test passes.
