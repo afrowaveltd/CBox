@@ -23,7 +23,7 @@ when_it_fails ----------> essentials
 - `essentials`: lowest-level types and small, reusable contracts; no dependency on `when_it_fails`.
 - `when_it_fails`: additional failure handling, diagnostics, and policies; it may consume `essentials`.
 - Future independent modules may depend on `essentials`, but their dependency edges must be intentional and documented.
-- **Proposed `blackboard`** is a separate low-level terminal output module, initially C17-only with an optional tiny platform adapter, and **no dependency on Essentials, WhenItFails, ncurses or DoesItFail**. See the [Blackboard Console design proposal](BLACKBOARD_CONSOLE_DESIGN.md). Its API remains undecided and unimplemented.
+- **Proposed `blackboard`** is an independent C17 console rendering/interactive TUI library targeting broad visual and behavioral compatibility with Spectre.Console. It combines low-level ANSI writing with a composable renderable/layout system, widgets, prompts and live displays, without dependency on Essentials, WhenItFails, ncurses or DoesItFail. Only small optional OS-specific adapters are required for terminal control/input. See [Blackboard design](BLACKBOARD_CONSOLE_DESIGN.md) and [Spectre parity matrix](BLACKBOARD_SPECTRE_PARITY.md). No C API or module is implemented yet.
 - Separate module headers, implementations, tests, and documentation are planned; start with a central Makefile and split the build only if useful.
 
 ## What compatibility means

@@ -55,11 +55,18 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Add more assertion types and optional ncurses reporter **in DoesItFail**, not CBox
 - [ ] Introduce packaging/install rules once the public API is stable
 
-## Parallel learning module proposal — Blackboard Console
+## Parallel module proposal — Blackboard: Spectre.Console-grade TUI for C
 
-- [x] Review CBox's existing hierarchy and Spectre.Console markup/ANSI separation.
-- [x] Document the [Blackboard Console design proposal](BLACKBOARD_CONSOLE_DESIGN.md) and teaching milestones.
-- [ ] Agree on minimal console API, error contracts and markup parsing rules.
-- [ ] Learner creates a minimal `blackboard/` module and manually implements first tag parser (`[red]`, `[blue]`, `[/]`).
-- [ ] Test ANSI/plain output, escaping, nested style restoration and terminal compatibility in small stages.
-- [ ] Integrate a tested Blackboard writer into a real CBox/DoesItFail test consumer without creating runtime dependencies on the test framework.
+**Objective upgraded 2026-11-14:** broad behavioral and visual Spectre.Console parity, not just a small ANSI color writer. See [architecture](BLACKBOARD_CONSOLE_DESIGN.md) and [feature parity tracker](BLACKBOARD_SPECTRE_PARITY.md).
+
+- [x] Inspect CBox module boundaries and actual Spectre.Console markup/rendering/widget designs.
+- [x] Define independent C17 core plus thin POSIX/Windows terminal adapters; no mandatory ncurses, Essentials or DoesItFail runtime dependencies.
+- [x] Establish long-range feature matrix for markup, tables, panels, trees, charts, live displays, progress, prompts and layouts.
+- [ ] Freeze documented API/ownership and error handling contracts for initial output context and parser, plus C# reference test fixtures.
+- [ ] Learner implements first ANSI/markup writer slice (`[red]`, `[blue]`, `[/]`), with tests and no hidden state.
+- [ ] Build renderable/measurement/layout/Unicode cell-width foundation early enough to support all widgets.
+- [ ] Add static widgets gradually (text, rule, panel, table, tree, grid, layouts) with normalized comparison tests against Spectre.Console.
+- [ ] Add progress, status, live rendering and screen lifecycle with redirect/fallback safeguards.
+- [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.
+- [ ] Add charts, calendar, more styles/themes, packaging and cross-platform examples.
+- [ ] Use in CBox programs, MemView and optionally a DoesItFail **reporter**, while DoesItFail's core stays standalone.

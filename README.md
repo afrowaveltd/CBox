@@ -10,7 +10,7 @@ The goal is a collection of **small, reusable, well-documented C libraries** wit
 
 | Module | Responsibility | Dependencies | Status |
 | --- | --- | --- | --- |
-| [blackboard](Docs/BLACKBOARD_CONSOLE_DESIGN.md) | Portable terminal text/markup writer, ANSI styles and future simple terminal controls | C17 standard library; optional platform adapter | Design proposal only; no module/code yet |
+| [blackboard](Docs/BLACKBOARD_CONSOLE_DESIGN.md) | Spectre.Console-inspired full terminal UI engine: markup, themes, rich widgets, layouts, progress/live displays and prompts | Independent C17 core, thin POSIX/Windows adapters; no mandatory ncurses | Comprehensive design/parity plan; not implemented |
 | [essentials](essentials/README.md) | Fundamental shared types and contracts, beginning with Result and Response | C standard library only (initial goal) | Provisional Result header + tests; implementation pending |
 | [when_it_fails](when_it_fails/README.md) | Higher-level diagnostics, errors, and failure handling | essentials | Reserved for later |
 
@@ -87,7 +87,7 @@ Build output is placed in `build/` and excluded from Git. The project uses C17, 
 6. Cross-language specifications cover observable behavior and edge cases, **not** identical in-memory layouts or ABIs.
 7. Keep module boundaries clear; higher-level modules may eventually use optional external libraries without burdening the core.
 
-Read [Architecture](Docs/ARCHITECTURE.md), [API documentation rules](Docs/API_DOCUMENTATION.md), and [Roadmap](Docs/ROADMAP.md).
+Read [Architecture](Docs/ARCHITECTURE.md), [API documentation rules](Docs/API_DOCUMENTATION.md), [Roadmap](Docs/ROADMAP.md), and the [Blackboard ↔ Spectre.Console compatibility matrix](Docs/BLACKBOARD_SPECTRE_PARITY.md).
 
 ## Related projects
 
