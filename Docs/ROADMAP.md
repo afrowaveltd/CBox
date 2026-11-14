@@ -65,6 +65,8 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Freeze documented API/ownership and error handling contracts for initial output context and parser, plus C# reference test fixtures.
 - [ ] Learner implements first ANSI/markup writer slice (`[red]`, `[blue]`, `[/]`), with tests and no hidden state.
 - [ ] Build renderable/measurement/layout/Unicode cell-width foundation early enough to support all widgets.
+- [ ] Implement and benchmark **render-and-forget** streaming output (no retained write history, minimal allocation and ANSI transitions) separately from optional viewport-sized live redraw buffers.
+- [ ] Establish performance baselines: allocations, peak RSS, ANSI bytes, write/flush counts, frame time and resize behavior, with identical scenarios for Spectre.Console and CConsole.
 - [ ] Add static widgets gradually (text, rule, panel, table, tree, grid, layouts) with normalized comparison tests against Spectre.Console.
 - [ ] Add progress, status, live rendering and screen lifecycle with redirect/fallback safeguards.
 - [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.

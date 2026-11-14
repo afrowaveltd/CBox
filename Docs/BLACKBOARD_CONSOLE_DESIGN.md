@@ -130,6 +130,42 @@ The user's proposed `console_write` / `console_writeline` can remain simple educ
 - Test invalid markup, excess nesting, escape injection, Unicode widths, large content, file redirection, terminal errors, background contrast, resize, cleanup and allocation failures.
 - Document licensing; maintain clear notices for any adapted code.
 
+## Performance and memory policy: render and forget wherever possible
+
+**Design goal:** exceptionally low baseline memory, no unnecessary retained output, low and predictable allocation counts and efficient terminal I/O, **without claiming unmeasured superiority over .NET or ncurses**. C17 makes resource control explicit; actual performance depends on algorithms, Unicode handling and terminal/SSH throughput.
+
+### Mode A — immediate / streaming output (default for ordinary writes)
+
+- Parse borrowed input text incrementally using a cursor, with a small current-style state and a bounded nested-style stack.
+- Emit contiguous source spans with `fwrite` (or a caller-supplied buffered writer) and only essential ANSI style transitions; avoid `printf`/syscall per character.
+- Do not allocate a copy of the input, create a complete syntax tree or retain printed content after the write finishes.
+- Avoid heap allocations for the common case when possible; the output context can borrow an existing `FILE *`. Define safe behavior for excess nesting rather than silently overflowing a fixed stack.
+- **Fire-and-forget means no retained rendered data; it does NOT mean ignore I/O errors.** Return/document write failures and preserve best-effort terminal style restoration.
+
+### Mode B — transient widget rendering
+
+- A static table/panel may measure and emit lines progressively without storing a second full-screen buffer, provided cell widths, wrapping and alignment have been determined.
+- Select minimal temporary scratch storage for columns/rows and release it as soon as the render call completes.
+- Input widgets and data sources may have their own memory ownership; do not assume table data magically disappears.
+
+### Mode C — interactive/live rendering
+
+- Keep **only essential application/view state**: focused action identity, scroll offset, visible data/window and necessary object handles. Reconstruct the screen as needed.
+- For efficient redraw, optionally keep a **viewport-sized previous-frame buffer**, not a history of every screen or an entire large document. Dirty regions and/or cursor-local updates reduce unnecessary writes.
+- On a terminal resize or theme change, recompute layout from the retained model/data source; never rely on the terminal to reconstruct previously discarded output.
+- Lazy source paging/sparse indexing for large FileBrowser directories and AJIS documents must be decided per data source. Enumerating every directory item repeatedly can be slower than a bounded index; *no-cache everywhere* is not an optimization.
+- Maintain hit regions for currently visible action targets. Rebuild or invalidate after layout/scroll changes; do not retain stale callback/context pointers.
+- Provide explicit memory budgets and optional bounded caches. Retained caches must be measured against improved redraw latency and I/O cost.
+
+### I/O and benchmark contracts
+
+- Minimize redundant ANSI sequences, large flush counts and full-screen rewrites. Terminal I/O and layout, not CPU alone, can dominate end-to-end performance.
+- Measure **elapsed time, bytes emitted, number of writes/flushes, allocations per operation, peak resident memory and frame latency** separately. Compare equivalent behavior, text and terminal settings with Spectre.Console and with an ncurses example before drawing conclusions.
+- Test small and constrained terminals (80x24, 40 columns), low-memory devices and redirected output. Include long Unicode strings, multi-codepoint emoji, nested styles, millions of lines and error/abort paths.
+- Keep debug/recording/snapshot backends possible without forcing production output to retain full rendered history.
+
+**Rule:** prefer output streaming by default; retain data only when needed for correct interaction, efficient repaint, reflow after resize or explicit user-visible features. Allocate by *actual visible complexity* wherever feasible rather than total file or output history.
+
 ## Development strategy: full target, vertical slices
 
 We will build the *foundation for the complete system* from day one, but implement it in small steps the learner can understand. A rich console engine is not achieved by writing every widget independently.
