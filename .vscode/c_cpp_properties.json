@@ -1,16 +1,15 @@
 {
-    "version": 4,
-    "configurations": [
-        {
-            "name": "Linux / GCC / C17",
-            "compilerPath": "/usr/bin/gcc",
-            "cStandard": "c17",
-            "intelliSenseMode": "linux-gcc-x64",
-            "includePath": [
-                "${workspaceFolder}/essentials/include",
-                "${workspaceFolder}/when_it_fails/include",
-                "${workspaceFolder}/../DoesItFail/include"
-            ]
-        }
-    ]
+  "version": 4,
+  "configurations": [
+    {
+      "name": "linux-gcc-x64",
+      "compilerPath": "/usr/bin/gcc",
+      "cStandard": "${default}",
+      "intelliSenseMode": "linux-gcc-x64",
+      "includePath": [
+        "${workspaceFolder}/**"
+      ],
+      "cppStandard": "${default}"
+    }
+  ]
 }
