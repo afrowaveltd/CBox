@@ -31,7 +31,11 @@ compile_commands.json
 .ccls-cache/
 
 # Editor / IDE local state
-.vscode/
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/c_cpp_properties.json
 .idea/
 .vs/
 *.code-workspace

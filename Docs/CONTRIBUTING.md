@@ -39,3 +39,7 @@ The initial folders contain `.gitkeep` because Git does not store empty director
 ## License
 
 The repository has an MIT license; preserve its existing notice in derivative distributions as required.
+
+## Keep builds, editor support and docs synchronized
+
+Whenever a new CBox module/test target is added, update the Makefile target, `.vscode/tasks.json`, relevant GDB launch task, include paths and accompanying README/Docs in the **same change**. Use DoesItFail only from test executables; keep its independent implementation in its own repository. `make test-framework` remains optional, while normal smoke tests do not require external test libraries. See [DoesItFail integration](DOES_IT_FAIL_INTEGRATION.md).

@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "CBox: smoke test",
+            "type": "shell",
+            "command": "make",
+            "args": ["test"],
+            "group": "test",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "CBox: build Result tests",
+            "type": "shell",
+            "command": "make",
+            "args": ["build/test_result"],
+            "group": "build",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "CBox: Result tests",
+            "type": "shell",
+            "command": "make",
+            "args": ["test-result"],
+            "group": "test",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "CBox: DoesItFail integration",
+            "type": "shell",
+            "command": "make",
+            "args": ["test-framework"],
+            "group": "test",
+            "problemMatcher": ["$gcc"]
+        },
+        {
+            "label": "CBox: clean",
+            "type": "shell",
+            "command": "make",
+            "args": ["clean"],
+            "problemMatcher": []
+        }
+    ]
+}

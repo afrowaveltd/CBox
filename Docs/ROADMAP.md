@@ -43,3 +43,14 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Add other language implementations only when maintainers want them
 
 **Non-goals for foundation:** port every .NET module, promise a stable ABI, or create a heavyweight framework before one useful type has been proven.
+
+## Parallel development tool — DoesItFail (independent repository)
+
+- [x] Choose independent library architecture and development-only dependency direction
+- [x] Prepare opt-in CBox static-library integration and version-controlled VS Code tasks
+- [x] Document integration, C17 portability policy, and AJIS/AjisFS exploratory notes
+- [ ] Publish DoesItFail source as its own GitHub repository (separate starter package prepared)
+- [ ] Verify complete first Result implementation and commit learner-owned `result.c`
+- [ ] Gradually migrate Result tests from plain `assert` to DoesItFail EXPECT checks
+- [ ] Add more assertion types and optional ncurses reporter **in DoesItFail**, not CBox
+- [ ] Introduce packaging/install rules once the public API is stable

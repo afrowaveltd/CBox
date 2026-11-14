@@ -96,3 +96,15 @@ Read [Architecture](Docs/ARCHITECTURE.md), [API documentation rules](Docs/API_DO
 ## License
 
 MIT; see [LICENSE](LICENSE).
+
+## Optional test framework: DoesItFail
+
+Our test runner is being developed as a **separate C17 library**, DoesItFail, not part of the CBox runtime or `when_it_fails`. CBox contains its own tests; it may *consume* DoesItFail as a development-only dependency. The repository for DoesItFail has not yet been published; its standalone starter tree is provided separately.
+
+With the standalone DoesItFail directory alongside CBox, run:
+
+```bash
+make test-framework
+```
+
+The default `make test` and the learner-owned `make test-result` are unchanged. This new target validates external static-library linking; it does **not** run Result tests. See [DoesItFail integration](Docs/DOES_IT_FAIL_INTEGRATION.md), [storage and performance research notes](Docs/EXPERIMENTAL_STORAGE_NOTES.md), and tracked [VS Code settings](.vscode/tasks.json).
