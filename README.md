@@ -10,6 +10,7 @@ The goal is a collection of **small, reusable, well-documented C libraries** wit
 
 | Module | Responsibility | Dependencies | Status |
 | --- | --- | --- | --- |
+| [blackboard](Docs/BLACKBOARD_CONSOLE_DESIGN.md) | Portable terminal text/markup writer, ANSI styles and future simple terminal controls | C17 standard library; optional platform adapter | Design proposal only; no module/code yet |
 | [essentials](essentials/README.md) | Fundamental shared types and contracts, beginning with Result and Response | C standard library only (initial goal) | Provisional Result header + tests; implementation pending |
 | [when_it_fails](when_it_fails/README.md) | Higher-level diagnostics, errors, and failure handling | essentials | Reserved for later |
 

@@ -54,3 +54,12 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Gradually migrate Result tests from plain `assert` to DoesItFail EXPECT checks
 - [ ] Add more assertion types and optional ncurses reporter **in DoesItFail**, not CBox
 - [ ] Introduce packaging/install rules once the public API is stable
+
+## Parallel learning module proposal — Blackboard Console
+
+- [x] Review CBox's existing hierarchy and Spectre.Console markup/ANSI separation.
+- [x] Document the [Blackboard Console design proposal](BLACKBOARD_CONSOLE_DESIGN.md) and teaching milestones.
+- [ ] Agree on minimal console API, error contracts and markup parsing rules.
+- [ ] Learner creates a minimal `blackboard/` module and manually implements first tag parser (`[red]`, `[blue]`, `[/]`).
+- [ ] Test ANSI/plain output, escaping, nested style restoration and terminal compatibility in small stages.
+- [ ] Integrate a tested Blackboard writer into a real CBox/DoesItFail test consumer without creating runtime dependencies on the test framework.
