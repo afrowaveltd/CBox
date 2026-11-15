@@ -76,6 +76,8 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Implement and benchmark **render-and-forget** streaming output (no retained write history, minimal allocation and ANSI transitions) separately from optional viewport-sized live redraw buffers.
 - [ ] Establish performance baselines: allocations, peak RSS, ANSI bytes, write/flush counts, frame time and resize behavior, with identical scenarios for Spectre.Console and CConsole.
 - [ ] Add static widgets gradually (text, rule, panel, table, tree, grid, layouts) with normalized comparison tests against Spectre.Console.
+- [x] Document [CodeBlock formatting vs optional syntax-highlighter module](BLACKBOARD_CODE_BLOCKS.md), preserving literal source and applying styles via offset spans, not embedded markup tags.
+- [ ] Implement literal, preformatted CodeBlock first (spaces, tabs, blank lines, horizontal clipping), then optional style-span highlighters with source-preservation tests.
 - [ ] Add progress, status, live rendering and screen lifecycle with redirect/fallback safeguards.
 - [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.
 - [ ] Design and test clickable **action regions**: keyboard activation, mouse reporting (SGR 1006/Win32), UTF-8-safe hit testing, callback context lifetimes, input mode restoration and safe OSC 8 URL distinction.

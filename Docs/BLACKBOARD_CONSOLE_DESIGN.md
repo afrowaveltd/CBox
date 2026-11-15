@@ -272,6 +272,40 @@ The preferred convenience syntax is `console_writeline_named("[Info]{label}: {co
 
 See [formatting design](BLACKBOARD_FORMATTING.md) for the refined user-preferred syntax, example dispatch and test requirements.
 
+## Code blocks: preserve source, optional formatting and syntax highlighting
+
+**User-approved architectural direction:** do not make a syntax highlighter necessary to render a code block. Treat **the original source, display formatting and syntax highlighting as separate concerns**.
+
+1. **Original code span (source of truth)** — `const char *data` plus byte length (or a read-only paging source); code is **literal data**, not CConsole markup. Preserve bytes including indentation, spaces, empty lines and newline boundaries. No implicit source rewriting or auto-reindentation.
+2. **CodeBlock display formatter/layout** — present the original source as a legible preformatted block. Optional borders, padding, line numbers, horizontal scroll, tab-stop expansion **for display only**, clipping and theme background. No highlighter required. Default is **no word wrapping** for code; explicit wrapping mode can be added with visible indicators and stable source offsets.
+3. **Optional syntax highlighter** — given a slice of original code and a language choice, emit **token classifications or style runs over original byte offsets**. It must not rewrite the code, move whitespace or require a fully copied colored string.
+4. **Theme resolver** — map token roles (`keyword`, `string`, `comment`, `number`, `type`, etc.) into colors/decorations under the active theme; when unavailable, simply use the CodeBlock base style.
+5. **Shared CConsole renderer** — overlay style runs onto the literal code span and stream styled segments/visible lines using existing terminal backends, preserving screen-cell width rules for Unicode.
+
+**Preferred handoff is style metadata, not markup injection.** The conceptual request “insert color tags without changing any other characters” should be implemented as *style spans* such as:
+
+```c
+/* Illustrative design only, not yet implemented. */
+typedef struct
+{
+    size_t byte_offset;
+    size_t byte_length;
+    cbox_code_token_role role;
+} cbox_code_style_span;
+```
+
+This avoids escaping collisions when source code itself contains `[blue]`, `[/]`, terminal control sequences or similar text. The renderer emits ANSI transitions if supported; source bytes are never reinterpreted as executable markup. Spans should be ordered, non-overlapping (or have explicitly defined style composition), bounded within the source and aligned with valid UTF-8 codepoint/grapheme boundaries as required. Invalid highlighter output should gracefully fall back to the uncolored block.
+
+**Scope distinction:** `[Code]...[/]` may remain a lightweight inline semantic style, but arbitrary source code may contain `[/]`. Use a **raw CodeBlock API** (and later a Markdown fenced-block adapter with correct delimiting/escaping) to pass code content reliably; never require embedding raw untrusted code in ordinary CConsole markup syntax.
+
+**Efficiency:** render just the visible source lines for interactive viewers; highlighter can stream style events or handle a bounded window. Stateful languages may require a small lexer state or sparse line-state checkpoints when starting partway through multiline comments/strings. Avoid allocating a full highlighted copy or running a lexer over a gigabyte of text for each scroll event.
+
+**Independent optional modules:** base CodeBlock and text layout must work with no highlighter. Separate language-specific highlighters and later Markdown/JSON/AJIS render adapters may link in optionally through a stable, versioned extension interface. Start with statically linked modules, and only design dynamic plugin loading when ownership, ABI and lifecycle are solid.
+
+**Testing:** original bytes remain unchanged with and without highlighting; identical whitespace and line layout across modes; literal `[red]` inside code stays literal; Unicode/emoji cell widths, tab stops, CRLF, blank lines, very long lines, huge-source paging, unsupported language fallback, invalid/overlapping runs and color-depth fallback.
+
+See [dedicated CodeBlock design](BLACKBOARD_CODE_BLOCKS.md).
+
 ## High-priority advanced component: FileBrowser
 
 The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.
