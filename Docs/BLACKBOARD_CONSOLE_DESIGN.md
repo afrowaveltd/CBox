@@ -258,6 +258,10 @@ No per-button terminal input loop, mouse mode setup or separate event system. Bu
 
 See [Button design and test contract](BLACKBOARD_BUTTONS.md).
 
+### Configurable widgets with defaults
+
+Every common CConsole element (Button, Panel, Table, etc.) should have a one-line/default construction path plus a typed options structure for per-widget style, dimensions and behavior. A default-constructor or presence mask is needed in C17 when zeroed fields have meaningful non-default values; changing one setting must not discard other defaults. Theme-driven normal/focus/disabled styling applies unless overridden. Parent layout controls widget placement; the widget controls content alignment. See [Button design](BLACKBOARD_BUTTONS.md).
+
 ## Theme-aware initialization and semantic markup
 
 The Blackboard/CConsole foundation will include a **built-in dark theme** (nearly black/dark gray background and readable foreground), optional theme file overrides (simple INI format proposed) and **semantic inline roles** such as `[Info]`, `[Warning]`, `[Error]`, `[Quote]`, `[Code]` and `[Success]`. These extend Spectre.Console-style explicit colors, not replace them.

@@ -46,6 +46,37 @@ cbox_button_options next = {
 
 Avoid freezing the public type before we choose an opaque or value-based widget representation, error model and ownership policy. The callback is invoked from the UI event dispatcher, not immediately from the renderer. Optional future action events may include source (keyboard/mouse), modifiers and widget ID, but do not force complexity on the simplest case.
 
+## Smart defaults and configurable options (design refinement)
+
+Every common widget must be **useful immediately with built-in defaults** and **configurable via a small options structure** without requiring a full builder or custom renderer. Suggested two-level API (illustrative only):
+
+```c
+/* One-line convenience: automatic theme/size/alignment */
+cbox_console_button("Next", on_next, &app);
+
+/* Detailed configuration */
+cbox_button_options options = cbox_button_options_default();
+options.text = "Next";
+options.icon = "→";
+options.width_cells = 20;
+options.border = CBOX_BORDER_ROUNDED;
+options.content_align = CBOX_ALIGN_CENTER;
+options.style_role = CBOX_BUTTON_PRIMARY;
+options.on_activate = on_next;
+options.context = &app;
+cbox_console_button_add(&console, &options);
+```
+
+Allow more specialized per-state foreground/background/border/font decorations through an optional style override struct. Default styles resolve through the active theme (normal, focused, hovered, disabled), so a change in theme updates the widget consistently; explicit overrides take precedence where provided.
+
+**Important C17 detail:** zero-initializing `cbox_button_options` alone does **not** represent defaults such as `enabled=true`. Provide an explicit default constructor, initializer macro, or option-presence bitset. A real zero can be a valid user-selected value; do not conflate missing and explicitly configured values. We can consider an `args[]` override list as a later convenience/extension, but a documented options struct with designated fields is easier to understand, type-check and maintain for ordinary C.
+
+**Layout responsibility:** `content_align` decides how icon/label appear inside the button; parent layout parameters decide where the button sits (left/center/right), spacing and flow. Use layout constraints rather than absolute screen coordinates for most applications. Raw coordinates may be supported in specialized canvas/overlay mode.
+
+**Size/ownership:** width and padding are measured in terminal cells, including borders, Unicode symbols and fallback icons. Document whether strings are borrowed/copied and the duration of the borrowed data; do not retain a pointer to an ephemeral stack buffer. Avoid overengineering callbacks with variable argument arrays when `void *context` already allows the caller to pass any structured state.
+
+**Test contract:** default construction + one-line use, options overriding individual defaults, changed theme, disabled/focused/hovered states, width=0 automatic, invalid/out-of-range values, invalid UTF-8, missing icon fallback, and callback context lifecycle.
+
 ## Internal event and rendering architecture
 
 ```text

@@ -86,6 +86,8 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.
 - [ ] Design and test clickable **action regions**: keyboard activation, mouse reporting (SGR 1006/Win32), UTF-8-safe hit testing, callback context lifetimes, input mode restoration and safe OSC 8 URL distinction.
 - [x] Document [Button widget](BLACKBOARD_BUTTONS.md): bordered text, optional icons, cell width/padding, normal/focused/disabled styling, unified keyboard/mouse activation.
+- [x] Define smart default constructors + typed options structs for Button and future widgets; document zero-vs-unspecified values and parent layout vs inner content alignment.
+- [ ] Test convenience and fully customized Button paths against the same renderer and event system.
 - [ ] Implement headless tests for focus traversal, Space activation, callback lifetime and clicking across emoji, padding and borders before wiring real mouse input.
 - [ ] Build minimal Button renderable atop shared layout/action regions; no duplicated terminal handling.
 - [ ] Add charts, calendar, more styles/themes, packaging and cross-platform examples.
