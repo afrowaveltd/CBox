@@ -13,7 +13,7 @@ Prefer a **single maintained Makefile with a selected module configuration**, ra
 ```text
 cconsole-core (terminal IO, capabilities, styles, text, layout)
     |
-    +-- cconsole-widgets (tables, panels, text, status, progress)
+    +-- cconsole-widgets (tables, panels, buttons, text, status, progress)
     |
     +-- cconsole-input (keyboard/mouse/focus/prompt)
     |
@@ -59,6 +59,7 @@ A stable root Makefile can include a validated `config.mk` and conditional modul
 
 - `minimal`: core markup, theme, plain and terminal writers only.
 - `tui`: core + widgets + interaction/focus.
+  - A `Button` is a widgets module renderable; **activation** requires the input/focus module, while drawing a button does not. No new runtime dependency on a mouse or ncurses.
 - `docs`: tui + CodeBlock + Markdown, optional highlighters.
 - `full`: all modules whose declared dependencies are satisfied, not automatic installation of arbitrary external parsers.
 - Custom checkbox selection: validated per-feature configuration.

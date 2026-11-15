@@ -85,6 +85,9 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Add progress, status, live rendering and screen lifecycle with redirect/fallback safeguards.
 - [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.
 - [ ] Design and test clickable **action regions**: keyboard activation, mouse reporting (SGR 1006/Win32), UTF-8-safe hit testing, callback context lifetimes, input mode restoration and safe OSC 8 URL distinction.
+- [x] Document [Button widget](BLACKBOARD_BUTTONS.md): bordered text, optional icons, cell width/padding, normal/focused/disabled styling, unified keyboard/mouse activation.
+- [ ] Implement headless tests for focus traversal, Space activation, callback lifetime and clicking across emoji, padding and borders before wiring real mouse input.
+- [ ] Build minimal Button renderable atop shared layout/action regions; no duplicated terminal handling.
 - [ ] Add charts, calendar, more styles/themes, packaging and cross-platform examples.
 - [ ] **High priority: CConsole FileBrowser**, port the nearly finished Spectre.Console FileBrowser using shared rendering/input/layout; verify the exact C# reference repository and its existing features first.
 - [ ] Cover file navigation, keyboard selection, cancellation, previews where supported, long-file/paging, terminal resize and filesystem error cases without adding dependencies to rendering core.

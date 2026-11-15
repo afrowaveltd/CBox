@@ -250,6 +250,14 @@ Reference:
 - https://learn.microsoft.com/en-us/windows/console/getconsolemode (Win32 mouse and VT input modes)
 - https://github.com/spectreconsole/spectre.console/blob/main/src/Spectre.Console.Ansi/AnsiWriter.cs (OSC 8 hyperlink support)
 
+## Button widget: text + focusable action region
+
+A first-class **Button** belongs among shared CConsole widgets. It is composed from bordered/padded text, an optional Unicode or ASCII icon, layout width constraints and an action identity with a C callback/context. It uses the existing **unified** input/focus system: Tab/Shift+Tab navigate; Space (and generally Enter) activate; a mouse click invokes the **same** callback when mouse events are available.
+
+No per-button terminal input loop, mouse mode setup or separate event system. Buttons must work as simple static renderables without interactive input and retain legible normal/focus/disabled presentation in legacy/monochrome/plain output. Widths are measured in **terminal cells** and hit testing uses actual post-layout coordinates, including padding, borders and wide glyphs.
+
+See [Button design and test contract](BLACKBOARD_BUTTONS.md).
+
 ## Theme-aware initialization and semantic markup
 
 The Blackboard/CConsole foundation will include a **built-in dark theme** (nearly black/dark gray background and readable foreground), optional theme file overrides (simple INI format proposed) and **semantic inline roles** such as `[Info]`, `[Warning]`, `[Error]`, `[Quote]`, `[Code]` and `[Success]`. These extend Spectre.Console-style explicit colors, not replace them.

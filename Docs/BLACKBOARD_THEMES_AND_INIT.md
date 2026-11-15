@@ -85,6 +85,7 @@ cbox_console_writeline("[Code]int x = 42;[/]");
 - The markup entry point is explicitly separate from **literal text writing**. Contents read from file names, AJIS/JSON values and user input are not automatically parsed as markup.
 - Converting roles to low-color/monochrome terminals should preserve meaning with optional plain markers (`[!]`, `[ERROR]`) and/or decoration, while keeping output readable.
 - Highlight and focus are theme roles for the whole cell span. A selected row must paint/pad all intended cells; no reliance on SGR background alone for unused columns.
+- Button widgets use semantic theme roles for normal/focused/disabled/activated states, border and icon. The whole active cell rectangle can be styled (including padding); fallback selected markers must remain legible without colors. See [button design](BLACKBOARD_BUTTONS.md).
 - No hidden, automatic shell commands or callback dispatch tied to tag names.
 
 ## Optional AS/400-inspired theme and demonstration
