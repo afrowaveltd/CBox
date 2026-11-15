@@ -86,6 +86,14 @@ cbox_console_writeline("[Code]int x = 42;[/]");
 - Highlight and focus are theme roles for the whole cell span. A selected row must paint/pad all intended cells; no reliance on SGR background alone for unused columns.
 - No hidden, automatic shell commands or callback dispatch tied to tag names.
 
+## Optional AS/400-inspired theme and demonstration
+
+Include a built-in `AS400` theme preset with a nostalgic green-on-dark palette and a small interactive **table/menu showcase**, in addition to (not replacing) the modern default dark theme. This is not a full IBM 5250 emulator. The showcase should exercise selection, theme roles, active row background, ASCII/Unicode fallback and status/footer output; no special renderer paths. See [AS/400 showcase](BLACKBOARD_AS400_SHOWCASE.md).
+
+## Text and placeholders
+
+Support **ordinary C printf-style conversions** alongside **explicitly bound typed named placeholders** as distinct formatting front ends, and preserve a pure literal-text writer. C17 cannot discover the address/value of a local `apples_count` from the string `"{*apples_count}"` alone. Most importantly, substituted strings must remain **literal data** and must not become parsed markup/actions. See [Formatting and placeholders](BLACKBOARD_FORMATTING.md).
+
 ## Constraints and tests
 
 - Base renderer remains **C17** and standalone; tiny POSIX/Windows adapters provide TTY detection, size, cursor and terminal capabilities. No mandatory ncurses.

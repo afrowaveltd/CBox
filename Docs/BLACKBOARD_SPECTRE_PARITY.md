@@ -12,6 +12,8 @@ Use this tracker to distinguish **semantic parity**, **visual parity**, **API er
 | Styles/theming | Style composition, color depth, foreground/background, hyperlinks | Match where terminal supports; contrast-aware fallback theme | Planned |
 | **INI-configurable themes (CConsole extension)** | User-defined styles/color support; CConsole adds a portable built-in dark theme and simple file-based config | Theme loading, default/focus colors, runtime overrides and legacy/redirect fallback | Planned, config grammar pending |
 | **Semantic markup roles (CConsole extension)** | Named color/decorations in markup | `[Warning]`, `[Error]`, `[Info]`, `[Quote]`, `[Code]`, `[Success]` resolved through active theme | Planned, nesting/unknown-role tests pending |
+| **AS/400-inspired theme and showcase (CConsole extension)** | No requirement for legacy IBM UI demo | Optional built-in green/black nostalgic themed table/menu, focus/status/footer; no 5250 emulator claim | Planned |
+| **C printf and named placeholders (CConsole extension)** | C# interpolated/format strings supported differently by language runtime | `%d`/`%s` style with explicit varargs, plus `{name}` with explicit typed binding; injected data stays literal, not markup | Planned; API and conversion coverage to validate |
 | Console/ANSI | VT writer, capabilities, terminal output and control | Portable writer with POSIX/Windows adapter, no mandatory ncurses | Planned |
 | Measurement | Styled segments and renderable measurement | Shared cell-width/segment model | Planned |
 | Basic renderables | Text, Markup, Rule, alignment/padding | Visually compatible static output | Planned |

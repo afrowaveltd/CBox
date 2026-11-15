@@ -64,6 +64,10 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [x] Establish long-range feature matrix for markup, tables, panels, trees, charts, live displays, progress, prompts and layouts.
 - [ ] Freeze documented API/ownership and error handling contracts for initial output context and parser, plus C# reference test fixtures.
 - [x] Document built-in dark theme, optional INI configuration, interactive-only clear-on-init, shutdown and semantic markup roles in [theme design](BLACKBOARD_THEMES_AND_INIT.md).
+- [x] Specify the proposed optional [AS/400 showcase and theme](BLACKBOARD_AS400_SHOWCASE.md), including focusable table and footer.
+- [x] Specify [printf-style and explicitly bound typed named placeholder](BLACKBOARD_FORMATTING.md) design, including literal-data safety and the limits of C reflection.
+- [ ] Implement/test compatible `%d`/`%s` formatting and named `{key}` binding without treating substituted strings as markup; finalize APIs after proof-of-concept.
+- [ ] Implement and test AS400 demo as a consumer of real table/theme/input components; validate classic 80x24, narrow, monochrome and redirected modes.
 - [ ] Test theme configuration/override precedence, whole-screen background fill on capable/legacy terminals, nested role resolution, automatic plain-text fallback and terminal restore semantics.
 - [ ] Learner implements first ANSI/markup writer slice (`[red]`, `[blue]`, `[/]`), with tests and no hidden state.
 - [ ] Build renderable/measurement/layout/Unicode cell-width foundation early enough to support all widgets.

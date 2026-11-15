@@ -260,6 +260,12 @@ Keep the theme **resolved once per initialization/reload**, not loaded for every
 
 See [Themes, semantic markup and initialization](BLACKBOARD_THEMES_AND_INIT.md) for examples, proposed INI syntax, guarantees, portability and open decisions.
 
+## AS/400-style showcase and formatting support
+
+A built-in **AS400-themed demonstration** will use the same generic CConsole table, layout and focus components; it is a nostalgic UI example, **not** an IBM 5250 protocol implementation. The theme is optional and does not replace the default modern dark profile. See [AS400 showcase](BLACKBOARD_AS400_SHOWCASE.md).
+
+The markup-facing API shall support **printf-style `%d` formatting** and separate **typed named placeholders** such as `{apples_count}` with an explicitly bound value (the library cannot dereference a C local variable by its runtime name). Markup interpretation applies to the trusted format template, **not** to interpolated user data. Literal text output remains an independent operation. The implementation must not choose an unsafe `vsnprintf`-then-markup-parse shortcut that reinterprets untrusted values. See [Formatting and placeholders](BLACKBOARD_FORMATTING.md).
+
 ## High-priority advanced component: FileBrowser
 
 The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.
