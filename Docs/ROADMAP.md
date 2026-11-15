@@ -91,6 +91,8 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Implement headless tests for focus traversal, Space activation, callback lifetime and clicking across emoji, padding and borders before wiring real mouse input.
 - [ ] Build minimal Button renderable atop shared layout/action regions; no duplicated terminal handling.
 - [ ] Add charts, calendar, more styles/themes, packaging and cross-platform examples.
+- [x] Add initial design-stage `cbox-blackboard(7)` man source and [manual page documentation plan](MAN_PAGES.md), with clearly stated unimplemented status.
+- [ ] As API/functions/configuration/CLIs become real, add matching man(3)/man(5)/man(1) pages; validate sources and support module-aware installation (`PREFIX`, `DESTDIR`).
 - [ ] **High priority: CConsole FileBrowser**, port the nearly finished Spectre.Console FileBrowser using shared rendering/input/layout; verify the exact C# reference repository and its existing features first.
 - [ ] Cover file navigation, keyboard selection, cancellation, previews where supported, long-file/paging, terminal resize and filesystem error cases without adding dependencies to rendering core.
 - [ ] **AJIS/JSON Viewer:** define parser-independent token/navigation adapter and strict JSON vs AJIS dialects; see [viewer design](BLACKBOARD_AJIS_VIEWER.md).

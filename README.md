@@ -89,6 +89,8 @@ Build output is placed in `build/` and excluded from Git. The project uses C17, 
 
 Read [Architecture](Docs/ARCHITECTURE.md), [API documentation rules](Docs/API_DOCUMENTATION.md), [Roadmap](Docs/ROADMAP.md), and the [Blackboard ↔ Spectre.Console compatibility matrix](Docs/BLACKBOARD_SPECTRE_PARITY.md).
 
+**Unix manual pages:** a preliminary, explicitly **design-stage** [cbox-blackboard(7) man page](man/man7/cbox-blackboard.7) is available as roff source. Preview on a Linux machine with `man -l man/man7/cbox-blackboard.7`. See [manual page conventions](Docs/MAN_PAGES.md) for the planned man(1)/man(3)/man(5)/man(7) documentation and install behavior. No CConsole API is implemented or documented as callable yet.
+
 Blackboard's longer-term scope includes a **C17 FileBrowser** matching our existing C# Spectre.Console FileBrowser, as a high-level module depending on the shared console/rendering/input engine. Its implementation and reference-based feature audit are pending; see the [design](Docs/BLACKBOARD_CONSOLE_DESIGN.md#high-priority-advanced-component-filebrowser).
 
 A planned [AJIS/JSON structured-data viewer](Docs/BLACKBOARD_AJIS_VIEWER.md) will reuse the standalone AJIS parser's C API and Blackboard rendering. It may be used as a FileBrowser preview or as a standalone terminal viewer. Neither native parser nor viewer is implemented yet.

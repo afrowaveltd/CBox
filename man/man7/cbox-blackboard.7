@@ -1,0 +1,90 @@
+.TH CBOX-BLACKBOARD 7 "November 2026" "CBox" "CBox Manual"
+.SH NAME
+cbox-blackboard \- design overview of the planned C17 terminal UI library
+.SH SYNOPSIS
+.B CBox Blackboard / CConsole
+.br
+Design status only; no public CConsole API has been released.
+.SH STATUS
+This manual page documents a
+.B proposed
+library architecture.
+The native Blackboard module, user-facing API, widgets and interactive
+features described below are
+.B not yet implemented.
+Do not use example function names from the design documents as if they
+were available for linking.
+.SH DESCRIPTION
+CBox Blackboard (also called CConsole in design discussions) is a planned
+C17 terminal output and text user interface library.
+It aims to make richly formatted command-line output and interactive
+programs easy to build without requiring ncurses or a .NET runtime.
+The focus is on a small, useful core and separately selectable modules.
+.PP
+The design includes terminal capability detection, plain-text output,
+ANSI/VT styling, UTF-8-aware text measurement, themes, and renderable
+components such as tables, panels, buttons, progress indicators and
+input prompts.
+.PP
+Rendering is intended to stream ordinary output without retaining it;
+interactive displays may retain a bounded viewport and the application
+state required to redraw.
+.SH PLANNED FEATURES
+.TP
+.B Text and markup
+Literal text output is separate from trusted markup parsing.
+Style tags include colors and semantic roles such as Info, Warning,
+Error, Success, Quote, and Code.
+.TP
+.B Themes
+A built-in dark theme, optional AS/400-inspired theme, and a proposed
+INI-based theme configuration.
+.TP
+.B Widgets
+Panels, tables, trees, layouts, progress indicators, and focusable
+buttons with default settings and optional typed configuration.
+.TP
+.B Input
+Keyboard navigation (including Tab and Space) with optional mouse
+interaction, all routed through one action/callback system.
+.TP
+.B Optional modules
+FileBrowser, Markdown, AJIS/JSON viewing, code-block presentation,
+language-specific source formatters, and syntax highlighters.
+Optional components must not become dependencies of the base renderer.
+.SH TERMINALS
+The design targets Linux/POSIX terminal environments and Windows console
+adapters.
+It includes capability-sensitive fallback for restricted terminals and
+a plain-text mode for redirected output.
+Unicode and emoji width handling must distinguish UTF-8 byte length
+from terminal display-cell width.
+.SH CONFIGURATION
+A small human-readable INI format is proposed for theme settings.
+The exact file name, search path, schema and public API have not been
+finalized.
+The library must not silently load an untrusted theme file from the
+working directory.
+.SH DOCUMENTATION
+The authoritative current design lives in the CBox repository under
+.B Docs/BLACKBOARD_CONSOLE_DESIGN.md
+and its linked design specifications.
+The man-page plan is documented in
+.BR Docs/MAN_PAGES.md .
+.SH FILES
+.TP
+.B man/man7/cbox-blackboard.7
+This design-stage manual page.
+.TP
+.B Docs/BLACKBOARD_CONSOLE_DESIGN.md
+Main architecture and feature plan.
+.TP
+.B Docs/BLACKBOARD_MODULAR_BUILD.md
+Proposed build profiles and optional-module selection.
+.SH SEE ALSO
+.BR man (1),
+.BR printf (3),
+.BR termios (3),
+.BR terminfo (5)
+.SH PROJECT
+https://github.com/afrowaveltd/CBox

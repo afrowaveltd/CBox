@@ -36,6 +36,10 @@ This example intentionally does **not** define a function or a public Result typ
 
 Keep language-neutral input/output specifications in `specifications/`. The same scenario can be executed by Toolbox, CBox, and future implementations (RustBox and others). Do not put implementation-dependent pointer addresses or struct memory layouts in shared expected outputs.
 
+## Unix manual reference
+
+For Unix/Linux releases, document implemented exported library entry points in **man(3)**, supporting configuration files in **man(5)**, installed tools in **man(1)**, and module overview in **man(7)**. Man pages are offline quick-reference material that must agree with the public headers, tests and ownership contracts. Do not create callable-looking function man pages before functions actually exist. See [manual page plan](MAN_PAGES.md).
+
 ## Review gate
 
 Do not treat a function as ready for general use until its behavior, error semantics, memory contract, unit tests, and example usage are present.
