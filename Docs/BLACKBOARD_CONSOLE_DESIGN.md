@@ -266,6 +266,12 @@ A built-in **AS400-themed demonstration** will use the same generic CConsole tab
 
 The markup-facing API shall support **printf-style `%d` formatting** and separate **typed named placeholders** such as `{apples_count}` with an explicitly bound value (the library cannot dereference a C local variable by its runtime name). Markup interpretation applies to the trusted format template, **not** to interpolated user data. Literal text output remains an independent operation. The implementation must not choose an unsafe `vsnprintf`-then-markup-parse shortcut that reinterprets untrusted values. See [Formatting and placeholders](BLACKBOARD_FORMATTING.md).
 
+### Ergonomic positional named placeholders
+
+The preferred convenience syntax is `console_writeline_named("[Info]{label}: {count}[/]", value, count)`: brace labels are **positional and left-to-right**, not runtime variable-name lookup. Capture argument types at compile time using C17 `_Generic` inside a macro front-end, constructing typed descriptors for a real renderer function. The ordinary typed bindings remain a useful lower-level API. There is no automatic dereference of arbitrary pointer types: caller writes `*pointer` to supply the pointed-to value. An ordinary C varargs function alone cannot discover argument types. Preserve a separate, explicit printf formatting mode.
+
+See [formatting design](BLACKBOARD_FORMATTING.md) for the refined user-preferred syntax, example dispatch and test requirements.
+
 ## High-priority advanced component: FileBrowser
 
 The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.

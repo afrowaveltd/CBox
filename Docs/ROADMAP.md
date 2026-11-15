@@ -66,6 +66,8 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [x] Document built-in dark theme, optional INI configuration, interactive-only clear-on-init, shutdown and semantic markup roles in [theme design](BLACKBOARD_THEMES_AND_INIT.md).
 - [x] Specify the proposed optional [AS/400 showcase and theme](BLACKBOARD_AS400_SHOWCASE.md), including focusable table and footer.
 - [x] Specify [printf-style and explicitly bound typed named placeholder](BLACKBOARD_FORMATTING.md) design, including literal-data safety and the limits of C reflection.
+- [x] Refine placeholder UX: positional `{label}` consumption left-to-right with a C17 `_Generic` macro facade; no required `CBOX_INT(...)` wrapper in common use.
+- [ ] Prototype typed macro argument mapping (bounded arity), single evaluation, mismatch diagnostics and passing literal user strings without markup injection.
 - [ ] Implement/test compatible `%d`/`%s` formatting and named `{key}` binding without treating substituted strings as markup; finalize APIs after proof-of-concept.
 - [ ] Implement and test AS400 demo as a consumer of real table/theme/input components; validate classic 80x24, narrow, monochrome and redirected modes.
 - [ ] Test theme configuration/override precedence, whole-screen background fill on capable/legacy terminals, nested role resolution, automatic plain-text fallback and terminal restore semantics.
