@@ -306,6 +306,12 @@ This avoids escaping collisions when source code itself contains `[blue]`, `[/]`
 
 See [dedicated CodeBlock design](BLACKBOARD_CODE_BLOCKS.md).
 
+## Source formatting and modular build profiles
+
+Language-aware **source formatters** are independent optional transformations over a working copy; they may reindent and relocate braces/line breaks according to selected language style **without changing the original source**. They are not the same as CodeBlock's presentational layout. A highlighter operates on the **displayed working text** and produces style metadata only; with no formatter/highlighter installed, raw code remains legible. The working copy is temporary or explicitly budgeted; some formatters require whole-program syntax context and are not automatically streamable. See [CodeBlock architecture](BLACKBOARD_CODE_BLOCKS.md).
+
+CConsole core should not require Markdown, JSON, AJIS, a language formatter/highlighter, or FileBrowser. Use a validated module dependency graph and a **single root Makefile plus selected configuration or build profile**, not divergent copies of whole Makefiles. A future checkbox TUI can generate build selections and run make but must have a CLI/manual bootstrap path. See [Modular builds and configurator](BLACKBOARD_MODULAR_BUILD.md).
+
 ## High-priority advanced component: FileBrowser
 
 The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.

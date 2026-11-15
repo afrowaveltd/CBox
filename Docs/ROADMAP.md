@@ -77,6 +77,10 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [ ] Establish performance baselines: allocations, peak RSS, ANSI bytes, write/flush counts, frame time and resize behavior, with identical scenarios for Spectre.Console and CConsole.
 - [ ] Add static widgets gradually (text, rule, panel, table, tree, grid, layouts) with normalized comparison tests against Spectre.Console.
 - [x] Document [CodeBlock formatting vs optional syntax-highlighter module](BLACKBOARD_CODE_BLOCKS.md), preserving literal source and applying styles via offset spans, not embedded markup tags.
+- [x] Clarify that an **optional language-aware source formatter** may transform a temporary working copy (indent/brace/line style), while the highlighter applies spans over **the displayed copy**; original source stays immutable.
+- [x] Record proposed [modular build profiles and future checkbox configurator](BLACKBOARD_MODULAR_BUILD.md) with a single root Makefile and validated dependencies.
+- [ ] Implement a minimal core-only build, then independent optional module archives/configuration; test absence of unselected module dependencies.
+- [ ] After CConsole input/widgets stabilize, prototype a configurator TUI generating a validated make config and invoking the existing build, with a noninteractive CLI path.
 - [ ] Implement literal, preformatted CodeBlock first (spaces, tabs, blank lines, horizontal clipping), then optional style-span highlighters with source-preservation tests.
 - [ ] Add progress, status, live rendering and screen lifecycle with redirect/fallback safeguards.
 - [ ] Add prompts, input, keyboard navigation and validation with reliable terminal-mode restoration.

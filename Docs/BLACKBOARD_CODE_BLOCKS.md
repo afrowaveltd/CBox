@@ -1,99 +1,90 @@
-# CBox Blackboard — CodeBlock, display formatter and optional syntax highlighting
+# CBox Blackboard — code display, source formatter and optional syntax highlighting
 
-**Status:** architecture only. No C17 CodeBlock, code formatter or syntax highlighter has been implemented.
+**Status:** architecture only; no native C17 CodeBlock or language formatter/highlighter implementation exists yet.
 
-## Goals
+## Three independent responsibilities
 
-- Render code attractively and legibly even without colors or a language-specific highlighter.
-- Preserve **original source** as the source of truth (including indentation and line breaks); never change code merely to display it.
-- Make syntax highlighting an optional independent module that returns **style metadata** for source spans, not a replacement formatted string.
-- Reuse general-purpose CConsole rendering, terminal capabilities, Unicode text measurement, themes and the same minimal-memory principle used by other widgets.
-
-## Responsibilities and data flow
+1. **Original source** is immutable. A CodeBlock can borrow a `const char *` plus length, or read from a bounded source/paged stream. Never modify the caller's source, original file or backing AJISFS data.
+2. **Optional language-aware code formatter** (like a VS Code format action) transforms a **working copy** into another valid representation with the chosen style rules (indentation, brace placement, spaces, line breaks). It is a *real source-code formatter*, **not merely display layout**. Rules are per language and configuration (for example C with Allman braces). A correct formatter must respect comments, string literals and syntax; if it cannot safely format, return an error or fall back to the unchanged source. Formatting a whole program is not guaranteed to be single-pass or purely streaming.
+3. **Optional syntax highlighter** accepts the **current displayed text** (formatted working copy if formatting ran, otherwise original). It only produces token classifications/style runs, never changes bytes, line breaks or indentation. A highlighter may be absent without preventing formatted/unstyled display.
+4. **CodeBlock renderer** handles presentation only (line numbers, gutters, padding, wrap/clip options, scroll, tab display width, terminal capabilities, theme). The renderer must not change the underlying text as a side effect.
 
 ```text
-     borrowed original source (UTF-8 bytes + length)
-                         |
-                         v
-             CodeBlock presentation
-           /                       \
-   base formatter/layout    optional syntax highlighter
-   (indentation, lines,      (language lexer, tokens,
-    tabs, numbers, clip)      style ranges/roles only)
-           \                       /
-            \                     /
-              theme style resolver
-                       |
-              CConsole renderable
-                       |
-        ANSI / legacy / plain terminal output
+                      ORIGINAL SOURCE (immutable)
+                                 |
+                          [formatter enabled?]
+                             /            \
+                            yes            no
+                            |               |
+                  optional working copy    borrowed source
+                  (language rule set)      (zero-copy)
+                            \               /
+                             displayed text view
+                                   |
+                          [highlighter enabled?]
+                             /            \
+                          style spans      no spans
+                             \            /
+                              CodeBlock
+                                 |
+                  same CConsole terminal renderer
 ```
 
-### 1. Original code and CodeBlock formatter
+**Important:** style-run byte offsets are relative to the **displayed/working text**, not automatically to the original source. If error diagnostics and cursor location need original-file positions, an optional source mapping is a separate concern because formatting changes offsets and line numbers.
 
-- `CodeBlock` must accept raw literal code with explicit byte length and possibly a read-only source reader for huge inputs.
-- Preserve whitespace, blank lines, line order and content. Format **only presentation**: padding/border/background, gutters/line numbers, tab stop calculations and optional scroll indicators.
-- For a preformatted block, default to no automatic wrapping: provide horizontal scroll or clip long lines, with a documented opt-in wrap mode that never edits the underlying source.
-- Style and control sequences embedded in user code are **never executed as markup or trusted ANSI**. Render raw control characters safely (escaped/visually represented as needed) rather than performing their control actions.
-- Work in monochrome/plain-text mode, on narrow terminals, and on redirected output.
+## Formatter interface principles
 
-### 2. Independent syntax highlighter
+- Formatter returns an explicitly **owned new buffer**, a caller-provided output sink, or a documented borrowed unchanged result. Ownership must be unambiguous: who frees what and whether the returned text aliases input.
+- The same formatter logic could later operate over stream chunks using state/checkpoints when syntactically valid. A big source formatter may need multiple passes, temporary spill files or a full syntax tree; never advertise generic safe streaming for every programming language.
+- Original indentation, tabs and line endings need a **specified normalization policy for the working copy**. A raw CodeBlock without formatter does not normalize them.
+- Language-specific configuration is optional: e.g. C braces=Allman, indent=4, tab policy. Formatter must not invent code transformations that change program semantics.
+- Unsupported language, formatter failure, memory budget overflow: display original source or return a documented failure policy. Do not silently truncate source.
+- Source presentation formatting is distinct from `CodeBlock`'s visual layout: adding line numbers, horizontal scrolling or painting a background does **not** modify source text.
 
-- Language recognizer receives only source (or an accessible source window plus lexical context), not the terminal backend or UI control structures.
-- It emits ordered **style spans** with offsets and lengths and a stable token role (keyword, string, comment, numeric literal, type, preprocessor directive, etc.).
-- CConsole resolves token roles using the current theme. Different themes change colors, never source text.
-- Optional module may be absent or fail: CodeBlock draws uncolored code and reports diagnostics only via its normal return/error channel.
-- A pure highlighter does not re-indent source, normalize line endings, automatically replace tabs, alter tokens or inject markers.
+## Highlighter interface principles
 
-Illustrative model (subject to contract review):
+Emit **style metadata** for a byte span in the displayed code, not inserted CConsole `[color]` markup. Code may itself contain `[red]`, `[/]` or terminal control bytes, which must be shown as literal data. The renderer maps token roles through the active theme.
 
 ```c
-typedef enum
-{
-    CBOX_CODE_TOKEN_KEYWORD,
-    CBOX_CODE_TOKEN_STRING,
-    CBOX_CODE_TOKEN_COMMENT,
-    CBOX_CODE_TOKEN_NUMBER,
-    CBOX_CODE_TOKEN_TYPE
-} cbox_code_token_role;
-
+/* Model only, NOT public API yet. */
 typedef struct
 {
-    size_t offset;      /* UTF-8 byte offset into original source */
-    size_t length;      /* Original byte span length */
+    size_t offset;  /* Into displayed working text */
+    size_t length;
     cbox_code_token_role role;
 } cbox_code_style_span;
 ```
 
-These are **not yet public declarations**.
+A highlighter should not own the entire source when it can borrow/read the displayed view. A language lexer with multiline tokens can carry state between chunks and sparse checkpoints to start at an arbitrary visible line. Reject malformed/out-of-range spans and fall back to plain code on failure.
 
-### Why not insert literal `[color]` tags?
+Inline `[Code]...[/]` remains a simple semantic style, not an arbitrary raw-code container. Raw code should be passed through a literal CodeBlock API or a carefully parsed Markdown fenced-block adapter.
 
-The user's proposed semantics (“keep all characters as-is and add colors”) are right, but generating one concatenated markup string creates problems: the code itself can contain `[blue]`, `[/]`, `[Code]`, or bytes interpreted as terminal escape commands. The source would be reparsed as control syntax rather than displayed literally.
+## Large sources and AJISFS / stream sources
 
-Returning **non-owning style spans over the original buffer** is safer and saves memory. The renderer can traverse original text and style runs together, emitting the right ANSI transitions only at boundaries. It need not allocate a new string containing markup and extra escape sequences.
+- Most small examples can format in a transient working copy and discard it after rendering; don't preserve history unnecessarily.
+- For large texts, support explicit limits, paging, line indexes and optional disk-backed temporary working output when needed. Do not allocate the entire file merely to show a small viewport.
+- AJISFS-style on-disk content is a potential source provider: request chunks as needed, parse/format or color them and emit progressively, but **lexical/state boundaries must survive chunk splits**. A chunk boundary can land mid-string, mid-comment or mid-token.
+- Incremental **display highlighting** is often feasible with preserved lexical context; correct arbitrary **source reformatting** is harder and may require global context. Keep both contracts separate.
+- The viewer can always choose an unformatted, uncolored source path when budgets or missing modules make transformation inappropriate.
 
-`[Code]text[/]` remains a quick inline semantic style, but robust raw code blocks use an explicit CodeBlock API. Markdown fenced blocks can delegate their literal contents to it without reparsing them as CConsole markup.
+## Optional module boundaries
 
-### Memory and streaming
+- Core terminal renderer/markup: necessary.
+- CodeBlock display widget: optional.
+- Language-specific formatter: optional, depends on the code-source interface only and must not require a terminal.
+- Language-specific highlighter: optional, similarly terminal-independent.
+- Markdown/structured-data readers: optional adapters to CodeBlock/widgets or core styled segments. Nothing in core depends on them.
+- Initially prefer separate static libraries and a documented registration/interface mechanism. Dynamic libraries/plugin ABI can come later when ownership and versioning are stable.
 
-- Initial static CodeBlock may render from a borrowed `const char *` and a bounded line buffer; no persisted highlighted copy.
-- For large files, a source adapter can page by byte offsets/line indexes and retain only a visible window. Avoid scanning huge files on every redraw.
-- Languages with multiline tokens need saved lexical state and potentially sparse checkpoints at line boundaries; otherwise highlighting a viewport starting in the middle of a block comment can be wrong.
-- Streamed style runs are possible; optional bounded caches are acceptable when they improve scroll latency.
+## Acceptance tests
 
-### Extension ecosystem
+- Original source bytes are unchanged after success, formatter failure and highlighter failure.
+- Formatter output follows selected language settings and remains syntactically/semantically valid (when supported); comments, literals, preprocessing and unusual input tested.
+- Working-copy output may differ from original only when formatting was requested.
+- Highlighter on/off yields *identical displayed code text* for the same formatting setting.
+- Style-run offsets reference the working copy, with Unicode boundaries and wide glyph display handling.
+- Fallback to unformatted and/or uncolored text under missing module, unknown language, low memory or malformed input.
+- Test very long lines, CRLF, tabs, zero-byte buffers, huge streaming sources, split tokens and lexer-state checkpoints.
+- Plain/legacy/ANSI output must not reinterpret code as markup or control sequences.
 
-Implement the generic CodeBlock **before** language-specific lexers. Keep highlighters in optional modules (first statically linked; dynamic loading later if useful). Markdown renderer, code preview in FileBrowser and terminal-based documentation browser reuse the same CodeBlock and renderer.
-
-### Test contracts
-
-- Exact source bytes unchanged after CodeBlock/highlighter operation.
-- Identical code text/indentation with and without highlighter.
-- Source containing markup-like text, ANSI bytes, tabs, CRLF, empty lines and long lines is shown as data.
-- Unicode glyph and emoji display width, Unicode style boundaries, clipping and horizontal scrolling.
-- Syntax state across line breaks and window boundaries; malformed spans/out-of-range offsets rejected safely.
-- Highlighting disabled or unavailable = readable code, not an error that prevents display.
-- Low-memory behavior and output parity in ANSI, plain and recording backends.
-
-Related: [Blackboard architecture](BLACKBOARD_CONSOLE_DESIGN.md), [themes](BLACKBOARD_THEMES_AND_INIT.md), [roadmap](ROADMAP.md).
+Related: [Blackboard architecture](BLACKBOARD_CONSOLE_DESIGN.md), [modular builds](BLACKBOARD_MODULAR_BUILD.md), [themes](BLACKBOARD_THEMES_AND_INIT.md).

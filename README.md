@@ -95,6 +95,8 @@ A planned [AJIS/JSON structured-data viewer](Docs/BLACKBOARD_AJIS_VIEWER.md) wil
 
 Blackboard also plans a [dark default theme, optional INI-style themes, and semantic tags](Docs/BLACKBOARD_THEMES_AND_INIT.md) such as `[Info]`, `[Warning]`, `[Error]`, `[Quote]` and `[Code]`. Interactive `init()` will eventually configure the themed screen; the exact public API and theme format are not implemented or frozen.
 
+Proposed advanced capabilities are optional modules: [language-aware formatting on a temporary working copy and independent syntax highlighting](Docs/BLACKBOARD_CODE_BLOCKS.md), with [modular make build profiles and a later checkbox configurator](Docs/BLACKBOARD_MODULAR_BUILD.md). The current Makefile has **not** implemented these build modes.
+
 ## Related projects
 
 - [.NET Toolbox](https://github.com/afrowaveltd/Toolbox) — conceptual and behavioral reference, especially `Essentials/Results`.

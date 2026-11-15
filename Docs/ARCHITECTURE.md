@@ -25,6 +25,7 @@ when_it_fails ----------> essentials
 - Future independent modules may depend on `essentials`, but their dependency edges must be intentional and documented.
 - **Proposed `blackboard`** is an independent C17 console rendering/interactive TUI library targeting broad visual and behavioral compatibility with Spectre.Console. It combines low-level ANSI writing with a composable renderable/layout system, widgets, prompts and live displays, without dependency on Essentials, WhenItFails, ncurses or DoesItFail. Only small optional OS-specific adapters are required for terminal control/input. See [Blackboard design](BLACKBOARD_CONSOLE_DESIGN.md) and [Spectre parity matrix](BLACKBOARD_SPECTRE_PARITY.md). No C API or module is implemented yet.
 - Separate module headers, implementations, tests, and documentation are planned; start with a central Makefile and split the build only if useful.
+- For Blackboard/CBoard, keep the **core independent of optional format parsers, highlighters, code formatters and viewers**. Build selection should use a single maintained root Makefile with profiles/configuration; a separate CLI/TUI checkbox configurator can be added later. See [modular build proposal](BLACKBOARD_MODULAR_BUILD.md).
 
 ## What compatibility means
 
