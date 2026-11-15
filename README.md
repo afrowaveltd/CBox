@@ -93,6 +93,8 @@ Blackboard's longer-term scope includes a **C17 FileBrowser** matching our exist
 
 A planned [AJIS/JSON structured-data viewer](Docs/BLACKBOARD_AJIS_VIEWER.md) will reuse the standalone AJIS parser's C API and Blackboard rendering. It may be used as a FileBrowser preview or as a standalone terminal viewer. Neither native parser nor viewer is implemented yet.
 
+Blackboard also plans a [dark default theme, optional INI-style themes, and semantic tags](Docs/BLACKBOARD_THEMES_AND_INIT.md) such as `[Info]`, `[Warning]`, `[Error]`, `[Quote]` and `[Code]`. Interactive `init()` will eventually configure the themed screen; the exact public API and theme format are not implemented or frozen.
+
 ## Related projects
 
 - [.NET Toolbox](https://github.com/afrowaveltd/Toolbox) — conceptual and behavioral reference, especially `Essentials/Results`.

@@ -250,6 +250,16 @@ Reference:
 - https://learn.microsoft.com/en-us/windows/console/getconsolemode (Win32 mouse and VT input modes)
 - https://github.com/spectreconsole/spectre.console/blob/main/src/Spectre.Console.Ansi/AnsiWriter.cs (OSC 8 hyperlink support)
 
+## Theme-aware initialization and semantic markup
+
+The Blackboard/CConsole foundation will include a **built-in dark theme** (nearly black/dark gray background and readable foreground), optional theme file overrides (simple INI format proposed) and **semantic inline roles** such as `[Info]`, `[Warning]`, `[Error]`, `[Quote]`, `[Code]` and `[Success]`. These extend Spectre.Console-style explicit colors, not replace them.
+
+A high-level `init()` convenience API should establish an **interactive** session, apply the selected/default theme and clear the screen; ordinary output or redirection should not unexpectedly clear a file/pipe or overwrite the user's terminal theme. The context-based low-level API must also support no-clear mode, caller-supplied stream, shutdown and mode/style restoration. Setting SGR background alone is not sufficient to fill a whole screen on every terminal.
+
+Keep the theme **resolved once per initialization/reload**, not loaded for every line. The tokenizer emits markup events; an independent style resolver applies semantic roles with nested-style inheritance. `[Code]` and `[Quote]` first mean inline style only; later rich code/quote widgets are separate features.
+
+See [Themes, semantic markup and initialization](BLACKBOARD_THEMES_AND_INIT.md) for examples, proposed INI syntax, guarantees, portability and open decisions.
+
 ## High-priority advanced component: FileBrowser
 
 The existing nearly finished **C# Spectre.Console FileBrowser** is an important **product-specific reference**, alongside upstream Spectre.Console itself. Our goal is to reproduce its interface and practical behavior in a native C17 counterpart, not merely create a directory-listing demonstration.

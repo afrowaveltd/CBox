@@ -63,6 +63,8 @@ This is a proposed **learning and implementation order**, not a release promise.
 - [x] Define independent C17 core plus thin POSIX/Windows terminal adapters; no mandatory ncurses, Essentials or DoesItFail runtime dependencies.
 - [x] Establish long-range feature matrix for markup, tables, panels, trees, charts, live displays, progress, prompts and layouts.
 - [ ] Freeze documented API/ownership and error handling contracts for initial output context and parser, plus C# reference test fixtures.
+- [x] Document built-in dark theme, optional INI configuration, interactive-only clear-on-init, shutdown and semantic markup roles in [theme design](BLACKBOARD_THEMES_AND_INIT.md).
+- [ ] Test theme configuration/override precedence, whole-screen background fill on capable/legacy terminals, nested role resolution, automatic plain-text fallback and terminal restore semantics.
 - [ ] Learner implements first ANSI/markup writer slice (`[red]`, `[blue]`, `[/]`), with tests and no hidden state.
 - [ ] Build renderable/measurement/layout/Unicode cell-width foundation early enough to support all widgets.
 - [ ] Implement and benchmark **render-and-forget** streaming output (no retained write history, minimal allocation and ANSI transitions) separately from optional viewport-sized live redraw buffers.

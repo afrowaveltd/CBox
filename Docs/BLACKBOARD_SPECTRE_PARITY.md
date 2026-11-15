@@ -10,6 +10,8 @@ Use this tracker to distinguish **semantic parity**, **visual parity**, **API er
 | --- | --- | --- | --- |
 | Text/markup | Rich markup, nesting, escape, named/RGB colors, background and decorations | Match grammar and visible behavior; plain mode supported | Planned |
 | Styles/theming | Style composition, color depth, foreground/background, hyperlinks | Match where terminal supports; contrast-aware fallback theme | Planned |
+| **INI-configurable themes (CConsole extension)** | User-defined styles/color support; CConsole adds a portable built-in dark theme and simple file-based config | Theme loading, default/focus colors, runtime overrides and legacy/redirect fallback | Planned, config grammar pending |
+| **Semantic markup roles (CConsole extension)** | Named color/decorations in markup | `[Warning]`, `[Error]`, `[Info]`, `[Quote]`, `[Code]`, `[Success]` resolved through active theme | Planned, nesting/unknown-role tests pending |
 | Console/ANSI | VT writer, capabilities, terminal output and control | Portable writer with POSIX/Windows adapter, no mandatory ncurses | Planned |
 | Measurement | Styled segments and renderable measurement | Shared cell-width/segment model | Planned |
 | Basic renderables | Text, Markup, Rule, alignment/padding | Visually compatible static output | Planned |
