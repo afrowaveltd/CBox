@@ -14,10 +14,6 @@ extern "C"
      *
      * This structure contains information about the outcome of a write operation, including any error that occurred,
      * the number of bytes successfully written, and an optional message describing the result.
-     * @param error The error code indicating the type of error that occurred, if any.
-     * @param written The number of bytes successfully written before any error occurred.
-     * @param message An optional message providing additional information about the result.
-     *
      * @note The structure is intended to provide a comprehensive summary of the write operation's outcome.
      *
      */
@@ -29,14 +25,19 @@ extern "C"
     } cbox_write_result;
 
     /**
-     * @brief Writes a specified number of bytes to an output stream.
+     * @brief Writes a specified number of literal bytes.
      *
-     * @return A cbox_write_result structure containing the outcome of the write operation.
-     * @param output Destination stream.
-     * @param text Source buffer.
+     * @param output Destination stream; must not be NULL.
+     * @param text Source buffer; must contain at least length readable bytes
+     *             when length is greater than zero.
      * @param length Number of bytes to write.
-     * @note The function does not interpret UTF-8 or any other character encoding; it treats the input as raw bytes
-     * @note The caller retains ownership of the source buffer and is responsible for managing its memory.
+     *
+     * @return A cbox_write_result containing the error code,
+     *         number of bytes written, and optional diagnostic.
+     *
+     * @note The input is treated as raw bytes.
+     * @note The function does not interpret UTF-8 or markup.
+     * @note The caller retains ownership of the source buffer.
      */
 
     cbox_write_result cbox_blackboard_write_literal(
