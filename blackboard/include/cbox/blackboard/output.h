@@ -32,7 +32,9 @@ extern "C"
      * @brief Writes a specified number of bytes to an output stream.
      *
      * @return A cbox_write_result structure containing the outcome of the write operation.
-     *
+     * @param output Destination stream.
+     * @param text Source buffer.
+     * @param length Number of bytes to write.
      * @note The function does not interpret UTF-8 or any other character encoding; it treats the input as raw bytes
      * @note The caller retains ownership of the source buffer and is responsible for managing its memory.
      */
