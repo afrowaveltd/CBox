@@ -1,4 +1,7 @@
 #include "cbox/blackboard/output.h"
+#include "cbox/blackboard/style.h"
+#include "cbox/blackboard/tests_publisher.h"
+
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
