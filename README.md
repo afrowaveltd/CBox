@@ -13,6 +13,7 @@ The goal is a collection of **small, reusable, well-documented C libraries** wit
 | [blackboard](Docs/BLACKBOARD_CONSOLE_DESIGN.md) | Spectre.Console-inspired full terminal UI engine: markup, themes, rich widgets, layouts, progress/live displays and prompts | Independent C17 core, thin POSIX/Windows adapters; no mandatory ncurses | Comprehensive design/parity plan; not implemented |
 | [essentials](essentials/README.md) | Fundamental shared types and contracts, beginning with Result and Response | C standard library only (initial goal) | Provisional Result header + tests; implementation pending |
 | [when_it_fails](when_it_fails/README.md) | Higher-level diagnostics, errors, and failure handling | essentials | Reserved for later |
+| [prove_it](prove_it/README.md) | Proposed reusable C17 testing framework with assertion/test/block/tree hierarchy and optional reporters | Standalone core; optional Full output via Blackboard | Design notes only; not implemented |
 
 Folder names use `snake_case`; exported C identifiers will use an explicit `cbox_` prefix to avoid collisions with application and third-party symbols.
 
@@ -30,6 +31,11 @@ CBox/
 │   ├── src/
 │   ├── tests/
 │   └── docs/
+├── prove_it/
+│   ├── README.md
+│   └── docs/
+│       ├── DESIGN_NOTES.md
+│       └── DECISION_LOG.md
 ├── specifications/
 │   ├── essentials/
 │   └── when_it_fails/
@@ -107,6 +113,10 @@ Proposed advanced capabilities are optional modules: [language-aware formatting 
 ## License
 
 MIT; see [LICENSE](LICENSE).
+
+## Future design: ProveIt
+
+We have preserved an early design sketch for a separate **[ProveIt](prove_it/README.md)** test framework under `prove_it/`. The [architecture](prove_it/docs/DESIGN_NOTES.md) and [decision log](prove_it/docs/DECISION_LOG.md) cover the assertion/test/block/tree hierarchy, block-allocated results, one disk-backed message per failing assertion, timing, Basic/Lite/Full reporting, and future run profiles. **This is documentation only**: it adds no source code, dependency, or test target and does **not** replace the independently developed DoesItFail framework.
 
 ## Optional test framework: DoesItFail
 
