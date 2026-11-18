@@ -38,4 +38,15 @@
 #define THICK_LINE "========================================"
 #define THIN_LINE "-----------------------------------------"
 
+/**
+ * @brief Enumeration for text styles used in test output
+ */
+enum cbox_text_style
+{
+    PASS,
+    FAIL,
+    WARN,
+    INFO
+};
+
 #endif // CBOX_STYLE_H

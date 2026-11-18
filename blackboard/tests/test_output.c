@@ -1,6 +1,4 @@
 #include "cbox/blackboard/output.h"
-#include "cbox/blackboard/style.h"
-#include "cbox/blackboard/tests_publisher.h"
 
 #include <assert.h>
 #include <stdio.h>
@@ -15,7 +13,7 @@ void test_write_literal(unsigned int *p_tests_passed, unsigned int *p_cases_pass
     const char text[] = "Hello";
 
     cbox_write_result result =
-        cbox_blackboard_write_literal(file, text, 5);
+    cbox_blackboard_write_literal(file, text, 5);
     assert(result.error == CBOX_CONSOLE_ERROR_NONE);
     *p_tests_passed += 1;
     assert(result.written == 5);
@@ -45,7 +43,7 @@ void test_write_literal_empty(unsigned int *p_tests_passed, unsigned int *p_case
     const char text[] = "";
 
     cbox_write_result result =
-        cbox_blackboard_write_literal(file, text, 0);
+    cbox_blackboard_write_literal(file, text, 0);
     assert(result.error == CBOX_CONSOLE_ERROR_NONE);
     *p_tests_passed += 1;
     assert(result.written == 0);
@@ -70,7 +68,7 @@ void test_write_null_text_zero_length(unsigned int *p_tests_passed, unsigned int
     assert(file != NULL);
     *p_tests_passed += 1;
     cbox_write_result result =
-        cbox_blackboard_write_literal(file, NULL, 0);
+    cbox_blackboard_write_literal(file, NULL, 0);
     assert(result.error == CBOX_CONSOLE_ERROR_NONE);
     *p_tests_passed += 1;
     assert(result.written == 0);
@@ -88,7 +86,7 @@ void test_write_literal_null(unsigned int *p_tests_passed, unsigned int *p_cases
     *p_tests_passed += 1;
 
     cbox_write_result result =
-        cbox_blackboard_write_literal(file, NULL, 5);
+    cbox_blackboard_write_literal(file, NULL, 5);
 
     assert(result.error == CBOX_CONSOLE_ERROR_INVALID_ARGUMENT);
     *p_tests_passed += 1;
@@ -102,7 +100,7 @@ void test_write_literal_null(unsigned int *p_tests_passed, unsigned int *p_cases
 void test_write_invalid_file(unsigned int *p_tests_passed, unsigned int *p_cases_passed)
 {
     cbox_write_result result =
-        cbox_blackboard_write_literal(NULL, "Hello", 5);
+    cbox_blackboard_write_literal(NULL, "Hello", 5);
 
     assert(result.error == CBOX_CONSOLE_ERROR_INVALID_ARGUMENT);
     *p_tests_passed += 1;
@@ -114,7 +112,7 @@ void test_write_invalid_file(unsigned int *p_tests_passed, unsigned int *p_cases
 void test_write_null_file_null_text(unsigned int *p_tests_passed, unsigned int *p_cases_passed)
 {
     cbox_write_result result =
-        cbox_blackboard_write_literal(NULL, NULL, 0);
+    cbox_blackboard_write_literal(NULL, NULL, 0);
 
     assert(result.error == CBOX_CONSOLE_ERROR_INVALID_ARGUMENT);
     *p_tests_passed += 1;
@@ -131,7 +129,7 @@ void test_write_binary_literal(unsigned int *p_tests_passed, unsigned int *p_cas
 
     const unsigned char data[] = {0x41, 0x00, 0x42, 0x00, 0x43};
     cbox_write_result result =
-        cbox_blackboard_write_literal(file, (const char *)data, sizeof(data));
+    cbox_blackboard_write_literal(file, (const char *)data, sizeof(data));
 
     assert(result.error == CBOX_CONSOLE_ERROR_NONE);
     *p_tests_passed += 1;
