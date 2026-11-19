@@ -4,6 +4,26 @@
 #include <stdbool.h>
 #include <stddef.h>
 
+typedef enum
+{
+    CBOX_REPORT_BASIC,
+    CBOX_REPORT_LITE,
+    CBOX_REPORT_FULL
+} cbox_report_mode;
+
+/**
+ * @brief Structure representing the options for test reporting
+ * @param mode The reporting mode (BASIC, LITE, FULL)
+ * @param monochrome Indicates whether to use monochrome output
+ * @param output The output file for the report
+ */
+typedef struct
+{
+    cbox_report_mode mode;
+    bool monochrome;
+    FILE *output;
+} cbox_report_options;
+
 /**
  * @brief Prints 40 equal signs as a thick line separator
  *
@@ -15,16 +35,6 @@ void cbox_print_thick_line(void);
  *
  */
 void cbox_print_thin_line(void);
-
-/**
- * @brief Starts a test with the given name and order
- * @param test_name The name of the test to start
- * @param p_order Pointer to the order of the test
- * @note This function should be called at the beginning of each test to initialize its order.
- */
-void cbox_start_test(
-    const char *test_name,
-    unsigned int *p_order);
 
 /**
  * @brief Prints the result of an assertion with the given message and style
@@ -48,12 +58,12 @@ void cbox_print_assert_result(
  */
 void cbox_print_test_result(
     const char *test_name,
-    enum cbox_text_style style,
-    unsigned int *p_order,
-    unsigned int *p_local_asserts_passed,
-    unsigned int *p_local_asserts_failed,
-    unsigned int *p_tests_passed,
-    unsigned int *p_tests_failed);
+    cbox_report_mode mode,
+    unsigned const int *p_order,
+    unsigned int asserts_passed,
+    unsigned int asserts_failed,
+    unsigned int tests_passed,
+    unsigned int tests_failed);
 
 /**
  * @brief Ends the current test and updates the test statistics

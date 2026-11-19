@@ -36,7 +36,7 @@ typedef struct assert_result
  * @param local_asserts_failed Number of local assertions failed
  * @note This structure is used to store the statistics of an individual test.
  */
-typedef struct test_stats
+typedef struct test_result
 {
     const char test_name[MAX_TEST_NAME_LENGTH];
     unsigned int *order;
@@ -131,5 +131,39 @@ typedef struct suite
     void (*run_tests)(void);
 
 } suite;
+
+/**
+ * @brief Structure representing an individual asset
+ * @param name The name of the asset
+ * @param path The file path of the asset
+ * @param expected_size The expected size of the asset
+ * @param policy The policy governing the asset's lifecycle
+ * @param generate Function pointer to generate the asset
+ * @param validate Function pointer to validate the asset
+ */
+typedef struct
+{
+    const char *name;
+    const char *path;
+
+    size_t expected_size;
+
+    ProveItAssetPolicy policy;
+
+    bool (*generate)(void *context);
+    bool (*validate)(void *context);
+
+} ProveItAsset;
+/**
+ * @brief Enumeration representing the policy of an asset
+ * @param PROVEIT_ASSET_TEMPORARY Indicates a temporary asset
+ * @param PROVEIT_ASSET_PERSISTENT Indicates a persistent asset
+ */
+typedef enum
+{
+    PROVEIT_ASSET_TEMPORARY,
+    PROVEIT_ASSET_PERSISTENT
+
+} ProveItAssetPolicy;
 
 #endif // TEST_TYPES_H
