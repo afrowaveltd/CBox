@@ -1,6 +1,6 @@
 # ProveIt — proposed CBox test framework
 
-> **Status (2026-11-18): design notes only.** No implementation, public API, CLI, build integration, or published package is claimed. The design grew out of hands-on C17 tests for Blackboard/CConsole. Implementation should follow deliberate C practice and experiments, not precede them.
+> **Status (2026-11-19): design notes only.** No implementation, public API, CLI, build integration, or published package is claimed. The design grew out of hands-on C17 tests for Blackboard/CConsole. Implementation should follow deliberate C practice and experiments, not precede them.
 
 **ProveIt** aims to make writing, grouping, selecting, running, and diagnosing C tests as easy as possible while keeping the mechanics understandable: structs, pointers, callbacks, explicit ownership, and measured memory usage. Inspiration includes xUnit's organization, but this is a native C17 design rather than a copy of its API.
 
@@ -8,6 +8,7 @@
 
 - [Architecture and data flow](docs/DESIGN_NOTES.md) — the ideas discussed so far, including assertions, test hierarchy, block allocation, diagnostics in `test.dat`, timing, and output modes.
 - [Decisions and open questions](docs/DECISION_LOG.md) — distinctions between agreed intent, examples, and unresolved details.
+- [Step builder, resource lifetimes, assets and parallel scheduling](docs/BUILDER_RESOURCES_AND_PARALLELISM.md) — 2026-11-19 follow-up, including named steps, preconditions, jump/loop ideas, explicit persistent fixture repair, and deferred interactive scopes.
 
 ## Current intent in brief
 
@@ -19,6 +20,7 @@
 - Three console reporters: **Basic** (plain text), **Lite** (light ANSI colors/formatting; proposed default), **Full** (optional CConsole/Blackboard rendering). Core must not depend on CConsole.
 - Plan selectable tests/blocks, repeat runs, user-defined profiles, optional interactive run/skip prompts, a default fail-stop policy (proposed 100 failed tests, `--force-complete` to override), and future AJIS/XML exports.
 - Timestamp/duration measurements should be part of the test-run result; elapsed time represented internally in one unit (candidate: nanoseconds).
+- Newer proposal: **Suite → Scope → Test** resource owners, opt-in immutable suite-owned persistent assets, a flexible named-step builder, and parallel noninteractive scopes with **interactive scopes run sequentially last**. See the dedicated design addendum; API and terminology are not finalized.
 
 ## Context and boundaries
 
