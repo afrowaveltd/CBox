@@ -53,3 +53,42 @@
 ## Scope guard
 
 Only **documentation** exists in this folder as of this note. Nothing here updates the current CBox `make test`, `make test-framework`, CConsole code, or the separate DoesItFail repository.
+
+
+## 2026-11-19 — composable steps, assets and scheduling
+
+This addendum records the latest discussion; full reasoning, examples and open problems are in [BUILDER_RESOURCES_AND_PARALLELISM.md](BUILDER_RESOURCES_AND_PARALLELISM.md). No implementation or stable API is implied.
+
+### Strongly preferred decisions
+
+| Topic | 2026-11-19 direction |
+| --- | --- |
+| Lifetime owners | \`suite_data\`, \`scope_data\`, \`test_data\`; owner controls cleanup; test never frees borrowed suite/scope resources |
+| Test independence | **Per-test init always** guarantees a known starting state. Reset restores working position/defaults; it cannot repair overwritten bytes |
+| Cleanup | Always perform owner-appropriate cleanup even after test FAIL; essential resource preparation failure produces ERROR and blocks affected work |
+| Persistent fixtures | **Opt-in \`persistent_asset\`**, owned by Suite, immutable to tests, survives normal cleanup; plain \`asset\` is temporary |
+| Persistent repair | Explicit \`suite_asset_repair(suite, asset)\` and \`suite_asset_repair_all(suite)\` |
+| Bulk repair | **Fail-fast**, abort at the first repair failure; incomplete repair leaves suite unready |
+| Test definition | \`test_builder()\` with \`add_step()\`, typed payloads/callbacks, flexible \`steps[]\`, **no enforced semantic step ordering** |
+| Step names | Unique within their test; allow selected checks and future named jump targets |
+| Preconditions | Optional checks attached to a step and optional explicit repeated \`PRECONDITIONS_CHECK\` steps |
+| Input origins | \`USER_INPUT\`, \`FILE_INPUT\`, \`FUNCTION\`, with captured inputs reused in validation and real execution |
+| Mock validation | Validate each scenario with expected-success mock before the real tested function; track \`validated\` separately from \`tested\` |
+| Flow control | Named \`jump_to\`, \`jump_while\`, \`jump_for\` proposed; zero-pass loops can be composed with an initial skip-to-condition jump |
+| Loop safety | No fixed \`MAX_LOOPS\`; optional per-jump repetition watchdog, potentially a future timeout |
+| Parallel execution | Parallelize **independent noninteractive Scopes**; initially keep tests within one Scope sequential |
+| Mutable data | Never share a writable suite asset across scopes. Sequential use may borrow a correctly reset instance; parallel workers need independent mutable clones/working state |
+| Interactive scheduling | **Any Scope containing interactive input is excluded from parallel processing and run sequentially *after* all noninteractive Scopes complete** |
+| Concurrent reporting | Never interleave raw worker assertion output; publish complete test reports on completion or after the suite, with independent progress reporting |
+
+### To resolve later
+
+- Relation of the earlier **Test Block** grouping to new **Scope**, and the final public API names.
+- Exact \`Step\` tagged-union layout, callback/result types and skip/continue semantics.
+- Correct mock validation when steps mutate data or use jumps.
+- Targeted step execution with explicit prerequisite state; named-jump counting, iteration semantics and optional timeout.
+- Asset presence versus fast/full integrity verification, reconstruction and safe publishing.
+- Deep-copy/clone strategy for mutable files and pointers; worker scheduling/diagnostic-log synchronization.
+- Whether the older **100-failed-tests stop** proposal is desirable in a runner intended to continue independent tests; no new default is decided.
+
+**Scope guard:** the 2026-11-19 notes only extend the design. No CBox/CConsole/DoesItFail implementation, tests, or build targets were changed.
